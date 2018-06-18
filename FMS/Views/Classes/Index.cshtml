@@ -1,0 +1,58 @@
+﻿@model IEnumerable<FMS.Class>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Class Name
+        </th>
+        <th>
+           Class Name   
+        </th>
+        <th>
+           Display Order
+        </th>
+        <th>
+            Is Active
+        </th>
+        <th>
+            School Name
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClassName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClassDisplayName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DisplayOrder)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsActive)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.School.SchoolDisplayName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ClassId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ClassId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ClassId })
+        </td>
+    </tr>
+}
+
+</table>

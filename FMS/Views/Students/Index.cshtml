@@ -1,0 +1,166 @@
+﻿@model FMS.Models.StudentSearchViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Search Student</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal clearfix row">
+
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="col-md-4">
+            Student Name
+            <div class="clearfix padding-top-bottom-20">
+                @Html.TextBoxFor(model => model.StudentName, htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            GR. No.
+            <div class="clearfix padding-top-bottom-20">
+                @Html.TextBoxFor(model => model.RegistarttionNo, htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            Class
+            <div class="clearfix padding-top-bottom-20">
+                @Html.DropDownListFor(model => model.SelectedClassId, new SelectList(Model.Classes, "ClassId", "ClassDisplayName"), "--select--", htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            School
+            <div class="clearfix padding-top-bottom-20">
+                @Html.DropDownListFor(model => model.SelectedSchoolId, new SelectList(Model.Schools, "SchoolId", "SchoolDisplayName"), "--select--", htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            Admission Quota
+            <div class="clearfix padding-top-bottom-20">
+                @Html.DropDownListFor(model => model.SelectedStudentQuotaId, new SelectList(Model.StudentQuotas, "StudentQuotaId", "StudentQuotaName"), "--select--", htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            Admission Year
+            <div class="clearfix padding-top-bottom-20">
+                @Html.DropDownListFor(model => model.SelectedAdmissionAcademicYearId, new SelectList(Model.AdmissionAcademicYears, "AcademicYearId", "AcademicYear1"), "--select--", htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            Status
+            <div class="clearfix padding-top-bottom-20">
+                @Html.DropDownListFor(model => model.SelectedStatusId, new SelectList(Model.Statuses, "StudentStatusId", "StatusName"), "--select--", htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+
+    <div class="padding-top-bottom-20 clearfix">
+        <input type="submit" value="Search" class="btn btn-primary pull-left" />
+        @*<div class="pull-left padding-left-20">
+                @Html.ActionLink("Print Receipt", "Index", null, htmlAttributes: new { target = "_blank", @class = "print-link" })
+            </div>*@
+    </div>
+    <hr />
+}
+<table class="table table-striped" id="students">
+    <thead>
+        <tr>
+            <th>
+                GR. No.
+            </th>
+            <th>
+                Gender
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Current Address
+            </th>
+            <th>
+                Cantact Numbers
+            </th>
+            <th class="no-sort">
+                Class
+            </th>
+            <th>
+                Admission Quota
+            </th>
+            <th>
+                Admission Academic Year
+            </th>
+            <th>
+                Status
+            </th>
+            <th class="no-sort"></th>
+        </tr>
+    </thead>
+    @foreach (var item in Model.Students)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentRegistartionNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @string.Concat(item.StudentFirstName, " ", item.StudentMiddleName, " ", item.StudentLastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CurrentAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CantactNumbers)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Class.ClassDisplayName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentQuota.StudentQuotaName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AcademicYear.AcademicYear1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentStatu.StatusName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.StudentId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.StudentId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.StudentId })
+            </td>
+        </tr>
+    }
+
+</table>
+@section Scripts{
+   <script src="~/Scripts/Highcharts/jquery.dataTables.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $('#students').dataTable({
+                "pageLength": 5,
+                //"ordering": false,
+                "searching": false,
+                "lengthChange": false,
+                "columnDefs": [{
+                    "targets": 'no-sort',
+                    "orderable": false,
+                }]
+
+            });
+        });
+
+
+    </script>
+}

@@ -1,0 +1,1855 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AcademicYear">
+          <Key>
+            <PropertyRef Name="AcademicYearId" />
+          </Key>
+          <Property Name="AcademicYearId" Type="tinyint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="AcademicYear" Type="char" MaxLength="9" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+          <Property Name="IsCurrent" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Class">
+          <Key>
+            <PropertyRef Name="ClassId" />
+          </Key>
+          <Property Name="ClassId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SchoolId" Type="int" Nullable="false" />
+          <Property Name="ClassName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ClassDisplayName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="DisplayOrder" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ClassFeeBreakup">
+          <Key>
+            <PropertyRef Name="ClassFeeBreakupId" />
+          </Key>
+          <Property Name="ClassFeeBreakupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClassId" Type="int" Nullable="false" />
+          <Property Name="FeeTypeId" Type="int" Nullable="false" />
+          <Property Name="QuotaId" Type="tinyint" Nullable="false" />
+          <Property Name="Month" Type="tinyint" />
+          <Property Name="TotalAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ClassQuotaTotalFee">
+          <Key>
+            <PropertyRef Name="ClassQuotaTotalFeeId" />
+          </Key>
+          <Property Name="ClassQuotaTotalFeeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClassId" Type="int" Nullable="false" />
+          <Property Name="QuotaId" Type="tinyint" Nullable="false" />
+          <Property Name="TotalFee" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="AcademicYearId" Type="tinyint" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FeeType">
+          <Key>
+            <PropertyRef Name="FeeTypeId" />
+          </Key>
+          <Property Name="FeeTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FeeTypeName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FeeTypeDisplayName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="FeeFactor" Type="int" Nullable="false" />
+          <Property Name="Priority" Type="tinyint" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FMSRole">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FMSUser">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Module">
+          <Key>
+            <PropertyRef Name="ModuleId" />
+          </Key>
+          <Property Name="ModuleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ModuleName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ModuleDisplayName" Type="varchar" MaxLength="100" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PaymentMode">
+          <Key>
+            <PropertyRef Name="PaymentModeId" />
+          </Key>
+          <Property Name="PaymentModeId" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PaymentMode" Type="varchar" MaxLength="50" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Receipt">
+          <Key>
+            <PropertyRef Name="ReceiptId" />
+          </Key>
+          <Property Name="ReceiptId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AcademicYearId" Type="tinyint" Nullable="false" />
+          <Property Name="ReceiptName" Type="varchar" MaxLength="500" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Balance" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="PaymentModeId" Type="tinyint" Nullable="false" />
+          <Property Name="ChequeNumber" Type="varchar" MaxLength="20" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RoleModule">
+          <Key>
+            <PropertyRef Name="RoleModuleId" />
+          </Key>
+          <Property Name="RoleModuleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+          <Property Name="ModuleId" Type="int" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="School">
+          <Key>
+            <PropertyRef Name="SchoolId" />
+          </Key>
+          <Property Name="SchoolId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SchoolName" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="SchoolDisplayName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="StudentId" />
+          </Key>
+          <Property Name="StudentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StudentRegistartionNo" Type="varchar" MaxLength="10" />
+          <Property Name="ClassId" Type="int" Nullable="false" />
+          <Property Name="SchoolId" Type="int" Nullable="false" />
+          <Property Name="Gender" Type="char" MaxLength="1" />
+          <Property Name="StudentLastName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="StudentFirstName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="StudentMiddleName" Type="nvarchar" MaxLength="200" />
+          <Property Name="DOB" Type="date" />
+          <Property Name="BirthAddress" Type="nvarchar" MaxLength="1000" />
+          <Property Name="ReligionAndCast" Type="nvarchar" MaxLength="500" />
+          <Property Name="StudentQuotaId" Type="tinyint" Nullable="false" />
+          <Property Name="ParentLastName" Type="nvarchar" MaxLength="200" />
+          <Property Name="ParentFirstName" Type="nvarchar" MaxLength="200" />
+          <Property Name="ParentMiddleName" Type="nvarchar" MaxLength="200" />
+          <Property Name="CurrentAddress" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="CantactNumbers" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="PermanentAddress" Type="nvarchar" MaxLength="1000" />
+          <Property Name="ParentOccuapation" Type="nvarchar" MaxLength="500" />
+          <Property Name="AnnualIncom" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="RelationWithStudent" Type="nvarchar" MaxLength="100" />
+          <Property Name="PreviousSchool" Type="nvarchar" MaxLength="500" />
+          <Property Name="LastPassedClass" Type="nvarchar" MaxLength="200" />
+          <Property Name="LastPassedYear" Type="char" MaxLength="4" />
+          <Property Name="LastClassMarks" Type="int" />
+          <Property Name="LastClassTotalMarks" Type="int" />
+          <Property Name="LastClassPercentage" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="AdmissionDate" Type="date" />
+          <Property Name="AdmissionAcademicYearId" Type="tinyint" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="StatusId" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StudentPayment">
+          <Key>
+            <PropertyRef Name="StudentPaymentId" />
+          </Key>
+          <Property Name="StudentPaymentId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AcademicYearId" Type="tinyint" Nullable="false" />
+          <Property Name="StudentId" Type="int" Nullable="false" />
+          <Property Name="ReceiptId" Type="bigint" Nullable="false" />
+          <Property Name="ClassFeeBreakupId" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StudentQuota">
+          <Key>
+            <PropertyRef Name="StudentQuotaId" />
+          </Key>
+          <Property Name="StudentQuotaId" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StudentQuotaName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="StudentQuotaDisplayName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StudentStatus">
+          <Key>
+            <PropertyRef Name="StudentStatusId" />
+          </Key>
+          <Property Name="StudentStatusId" Type="tinyint" Nullable="false" />
+          <Property Name="StatusName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="StatusDispalyName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="UserRoleId" />
+          </Key>
+          <Property Name="UserRoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserSchool">
+          <Key>
+            <PropertyRef Name="UserSchoolId" />
+          </Key>
+          <Property Name="UserSchoolId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="SchoolId" Type="int" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Class_School">
+          <End Role="School" Type="Self.School" Multiplicity="1" />
+          <End Role="Class" Type="Self.Class" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="School">
+              <PropertyRef Name="SchoolId" />
+            </Principal>
+            <Dependent Role="Class">
+              <PropertyRef Name="SchoolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClassFeeBreakup_Class">
+          <End Role="Class" Type="Self.Class" Multiplicity="1" />
+          <End Role="ClassFeeBreakup" Type="Self.ClassFeeBreakup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="ClassId" />
+            </Principal>
+            <Dependent Role="ClassFeeBreakup">
+              <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClassFeeBreakup_ClassFeeBreakup">
+          <End Role="StudentQuota" Type="Self.StudentQuota" Multiplicity="1" />
+          <End Role="ClassFeeBreakup" Type="Self.ClassFeeBreakup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentQuota">
+              <PropertyRef Name="StudentQuotaId" />
+            </Principal>
+            <Dependent Role="ClassFeeBreakup">
+              <PropertyRef Name="QuotaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClassFeeBreakup_FeeType">
+          <End Role="FeeType" Type="Self.FeeType" Multiplicity="1" />
+          <End Role="ClassFeeBreakup" Type="Self.ClassFeeBreakup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FeeType">
+              <PropertyRef Name="FeeTypeId" />
+            </Principal>
+            <Dependent Role="ClassFeeBreakup">
+              <PropertyRef Name="FeeTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FMSRole_FMSUser">
+          <End Role="FMSUser" Type="Self.FMSUser" Multiplicity="1" />
+          <End Role="FMSRole" Type="Self.FMSRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="FMSRole">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FMSRole_FMSUser1">
+          <End Role="FMSUser" Type="Self.FMSUser" Multiplicity="0..1" />
+          <End Role="FMSRole" Type="Self.FMSRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="FMSRole">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FMSUser_FMSUser">
+          <End Role="FMSUser" Type="Self.FMSUser" Multiplicity="1" />
+          <End Role="FMSUser1" Type="Self.FMSUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="FMSUser1">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FMSUser_FMSUser1">
+          <End Role="FMSUser" Type="Self.FMSUser" Multiplicity="0..1" />
+          <End Role="FMSUser1" Type="Self.FMSUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="FMSUser1">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Receipt_AcademicYear">
+          <End Role="AcademicYear" Type="Self.AcademicYear" Multiplicity="1" />
+          <End Role="Receipt" Type="Self.Receipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AcademicYear">
+              <PropertyRef Name="AcademicYearId" />
+            </Principal>
+            <Dependent Role="Receipt">
+              <PropertyRef Name="AcademicYearId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Receipt_PaymentMode">
+          <End Role="PaymentMode" Type="Self.PaymentMode" Multiplicity="1" />
+          <End Role="Receipt" Type="Self.Receipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentMode">
+              <PropertyRef Name="PaymentModeId" />
+            </Principal>
+            <Dependent Role="Receipt">
+              <PropertyRef Name="PaymentModeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoleModule_FMSRole">
+          <End Role="FMSRole" Type="Self.FMSRole" Multiplicity="1" />
+          <End Role="RoleModule" Type="Self.RoleModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSRole">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="RoleModule">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoleModule_FMSUser">
+          <End Role="FMSUser" Type="Self.FMSUser" Multiplicity="1" />
+          <End Role="RoleModule" Type="Self.RoleModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="RoleModule">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoleModule_FMSUser1">
+          <End Role="FMSUser" Type="Self.FMSUser" Multiplicity="0..1" />
+          <End Role="RoleModule" Type="Self.RoleModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="RoleModule">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoleModule_Module">
+          <End Role="Module" Type="Self.Module" Multiplicity="1" />
+          <End Role="RoleModule" Type="Self.RoleModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Module">
+              <PropertyRef Name="ModuleId" />
+            </Principal>
+            <Dependent Role="RoleModule">
+              <PropertyRef Name="ModuleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_AcademicYear">
+          <End Role="AcademicYear" Type="Self.AcademicYear" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AcademicYear">
+              <PropertyRef Name="AcademicYearId" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="AdmissionAcademicYearId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_Class">
+          <End Role="Class" Type="Self.Class" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="ClassId" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_School">
+          <End Role="School" Type="Self.School" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="School">
+              <PropertyRef Name="SchoolId" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="SchoolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_StudentQuota">
+          <End Role="StudentQuota" Type="Self.StudentQuota" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentQuota">
+              <PropertyRef Name="StudentQuotaId" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="StudentQuotaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_StudentStatus">
+          <End Role="StudentStatus" Type="Self.StudentStatus" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentStatus">
+              <PropertyRef Name="StudentStatusId" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentPayment_AcademicYear">
+          <End Role="AcademicYear" Type="Self.AcademicYear" Multiplicity="1" />
+          <End Role="StudentPayment" Type="Self.StudentPayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AcademicYear">
+              <PropertyRef Name="AcademicYearId" />
+            </Principal>
+            <Dependent Role="StudentPayment">
+              <PropertyRef Name="AcademicYearId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentPayment_ClassFeeBreakup">
+          <End Role="ClassFeeBreakup" Type="Self.ClassFeeBreakup" Multiplicity="1" />
+          <End Role="StudentPayment" Type="Self.StudentPayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClassFeeBreakup">
+              <PropertyRef Name="ClassFeeBreakupId" />
+            </Principal>
+            <Dependent Role="StudentPayment">
+              <PropertyRef Name="ClassFeeBreakupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentPayment_Receipt">
+          <End Role="Receipt" Type="Self.Receipt" Multiplicity="1" />
+          <End Role="StudentPayment" Type="Self.StudentPayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Receipt">
+              <PropertyRef Name="ReceiptId" />
+            </Principal>
+            <Dependent Role="StudentPayment">
+              <PropertyRef Name="ReceiptId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentPayment_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="StudentPayment" Type="Self.StudentPayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="StudentId" />
+            </Principal>
+            <Dependent Role="StudentPayment">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRole_FMSRole">
+          <End Role="FMSRole" Type="Self.FMSRole" Multiplicity="1" />
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSRole">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRole_FMSUser">
+          <End Role="FMSUser" Type="Self.FMSUser" Multiplicity="1" />
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRole_FMSUser1">
+          <End Role="FMSUser" Type="Self.FMSUser" Multiplicity="1" />
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRole_FMSUser2">
+          <End Role="FMSUser" Type="Self.FMSUser" Multiplicity="0..1" />
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserSchool_FMSUser">
+          <End Role="FMSUser" Type="Self.FMSUser" Multiplicity="1" />
+          <End Role="UserSchool" Type="Self.UserSchool" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserSchool">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserSchool_FMSUser1">
+          <End Role="FMSUser" Type="Self.FMSUser" Multiplicity="1" />
+          <End Role="UserSchool" Type="Self.UserSchool" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserSchool">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserSchool_FMSUser2">
+          <End Role="FMSUser" Type="Self.FMSUser" Multiplicity="0..1" />
+          <End Role="UserSchool" Type="Self.UserSchool" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserSchool">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserSchool_School">
+          <End Role="School" Type="Self.School" Multiplicity="1" />
+          <End Role="UserSchool" Type="Self.UserSchool" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="School">
+              <PropertyRef Name="SchoolId" />
+            </Principal>
+            <Dependent Role="UserSchool">
+              <PropertyRef Name="SchoolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FMSModelStoreContainer">
+          <EntitySet Name="AcademicYear" EntityType="Self.AcademicYear" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Class" EntityType="Self.Class" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClassFeeBreakup" EntityType="Self.ClassFeeBreakup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClassQuotaTotalFee" EntityType="Self.ClassQuotaTotalFee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FeeType" EntityType="Self.FeeType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FMSRole" EntityType="Self.FMSRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FMSUser" EntityType="Self.FMSUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Module" EntityType="Self.Module" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PaymentMode" EntityType="Self.PaymentMode" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Receipt" EntityType="Self.Receipt" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoleModule" EntityType="Self.RoleModule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="School" EntityType="Self.School" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentPayment" EntityType="Self.StudentPayment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentQuota" EntityType="Self.StudentQuota" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentStatus" EntityType="Self.StudentStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserSchool" EntityType="Self.UserSchool" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Class_School" Association="Self.FK_Class_School">
+            <End Role="School" EntitySet="School" />
+            <End Role="Class" EntitySet="Class" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClassFeeBreakup_Class" Association="Self.FK_ClassFeeBreakup_Class">
+            <End Role="Class" EntitySet="Class" />
+            <End Role="ClassFeeBreakup" EntitySet="ClassFeeBreakup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClassFeeBreakup_ClassFeeBreakup" Association="Self.FK_ClassFeeBreakup_ClassFeeBreakup">
+            <End Role="StudentQuota" EntitySet="StudentQuota" />
+            <End Role="ClassFeeBreakup" EntitySet="ClassFeeBreakup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClassFeeBreakup_FeeType" Association="Self.FK_ClassFeeBreakup_FeeType">
+            <End Role="FeeType" EntitySet="FeeType" />
+            <End Role="ClassFeeBreakup" EntitySet="ClassFeeBreakup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FMSRole_FMSUser" Association="Self.FK_FMSRole_FMSUser">
+            <End Role="FMSUser" EntitySet="FMSUser" />
+            <End Role="FMSRole" EntitySet="FMSRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FMSRole_FMSUser1" Association="Self.FK_FMSRole_FMSUser1">
+            <End Role="FMSUser" EntitySet="FMSUser" />
+            <End Role="FMSRole" EntitySet="FMSRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FMSUser_FMSUser" Association="Self.FK_FMSUser_FMSUser">
+            <End Role="FMSUser" EntitySet="FMSUser" />
+            <End Role="FMSUser1" EntitySet="FMSUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FMSUser_FMSUser1" Association="Self.FK_FMSUser_FMSUser1">
+            <End Role="FMSUser" EntitySet="FMSUser" />
+            <End Role="FMSUser1" EntitySet="FMSUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Receipt_AcademicYear" Association="Self.FK_Receipt_AcademicYear">
+            <End Role="AcademicYear" EntitySet="AcademicYear" />
+            <End Role="Receipt" EntitySet="Receipt" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Receipt_PaymentMode" Association="Self.FK_Receipt_PaymentMode">
+            <End Role="PaymentMode" EntitySet="PaymentMode" />
+            <End Role="Receipt" EntitySet="Receipt" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoleModule_FMSRole" Association="Self.FK_RoleModule_FMSRole">
+            <End Role="FMSRole" EntitySet="FMSRole" />
+            <End Role="RoleModule" EntitySet="RoleModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoleModule_FMSUser" Association="Self.FK_RoleModule_FMSUser">
+            <End Role="FMSUser" EntitySet="FMSUser" />
+            <End Role="RoleModule" EntitySet="RoleModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoleModule_FMSUser1" Association="Self.FK_RoleModule_FMSUser1">
+            <End Role="FMSUser" EntitySet="FMSUser" />
+            <End Role="RoleModule" EntitySet="RoleModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoleModule_Module" Association="Self.FK_RoleModule_Module">
+            <End Role="Module" EntitySet="Module" />
+            <End Role="RoleModule" EntitySet="RoleModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_AcademicYear" Association="Self.FK_Student_AcademicYear">
+            <End Role="AcademicYear" EntitySet="AcademicYear" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_Class" Association="Self.FK_Student_Class">
+            <End Role="Class" EntitySet="Class" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_School" Association="Self.FK_Student_School">
+            <End Role="School" EntitySet="School" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_StudentQuota" Association="Self.FK_Student_StudentQuota">
+            <End Role="StudentQuota" EntitySet="StudentQuota" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_StudentStatus" Association="Self.FK_Student_StudentStatus">
+            <End Role="StudentStatus" EntitySet="StudentStatus" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentPayment_AcademicYear" Association="Self.FK_StudentPayment_AcademicYear">
+            <End Role="AcademicYear" EntitySet="AcademicYear" />
+            <End Role="StudentPayment" EntitySet="StudentPayment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentPayment_ClassFeeBreakup" Association="Self.FK_StudentPayment_ClassFeeBreakup">
+            <End Role="ClassFeeBreakup" EntitySet="ClassFeeBreakup" />
+            <End Role="StudentPayment" EntitySet="StudentPayment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentPayment_Receipt" Association="Self.FK_StudentPayment_Receipt">
+            <End Role="Receipt" EntitySet="Receipt" />
+            <End Role="StudentPayment" EntitySet="StudentPayment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentPayment_Student" Association="Self.FK_StudentPayment_Student">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="StudentPayment" EntitySet="StudentPayment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRole_FMSRole" Association="Self.FK_UserRole_FMSRole">
+            <End Role="FMSRole" EntitySet="FMSRole" />
+            <End Role="UserRole" EntitySet="UserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRole_FMSUser" Association="Self.FK_UserRole_FMSUser">
+            <End Role="FMSUser" EntitySet="FMSUser" />
+            <End Role="UserRole" EntitySet="UserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRole_FMSUser1" Association="Self.FK_UserRole_FMSUser1">
+            <End Role="FMSUser" EntitySet="FMSUser" />
+            <End Role="UserRole" EntitySet="UserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRole_FMSUser2" Association="Self.FK_UserRole_FMSUser2">
+            <End Role="FMSUser" EntitySet="FMSUser" />
+            <End Role="UserRole" EntitySet="UserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserSchool_FMSUser" Association="Self.FK_UserSchool_FMSUser">
+            <End Role="FMSUser" EntitySet="FMSUser" />
+            <End Role="UserSchool" EntitySet="UserSchool" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserSchool_FMSUser1" Association="Self.FK_UserSchool_FMSUser1">
+            <End Role="FMSUser" EntitySet="FMSUser" />
+            <End Role="UserSchool" EntitySet="UserSchool" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserSchool_FMSUser2" Association="Self.FK_UserSchool_FMSUser2">
+            <End Role="FMSUser" EntitySet="FMSUser" />
+            <End Role="UserSchool" EntitySet="UserSchool" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserSchool_School" Association="Self.FK_UserSchool_School">
+            <End Role="School" EntitySet="School" />
+            <End Role="UserSchool" EntitySet="UserSchool" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="FMSEntities" annotation:LazyLoadingEnabled="true" >
+          <EntitySet Name="Classes" EntityType="FMSModel.Class" />
+          <EntitySet Name="ClassFeeBreakups" EntityType="FMSModel.ClassFeeBreakup" />
+          <EntitySet Name="FeeTypes" EntityType="FMSModel.FeeType" />
+          <EntitySet Name="PaymentModes" EntityType="FMSModel.PaymentMode" />
+          <EntitySet Name="Receipts" EntityType="FMSModel.Receipt" />
+          <EntitySet Name="Schools" EntityType="FMSModel.School" />
+          <EntitySet Name="StudentPayments" EntityType="FMSModel.StudentPayment" />
+          <EntitySet Name="StudentQuotas" EntityType="FMSModel.StudentQuota" />
+          <AssociationSet Name="FK_ClassFeeBreakup_Class" Association="FMSModel.FK_ClassFeeBreakup_Class">
+            <End Role="Class" EntitySet="Classes" />
+            <End Role="ClassFeeBreakup" EntitySet="ClassFeeBreakups" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClassFeeBreakup_FeeType" Association="FMSModel.FK_ClassFeeBreakup_FeeType">
+            <End Role="FeeType" EntitySet="FeeTypes" />
+            <End Role="ClassFeeBreakup" EntitySet="ClassFeeBreakups" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentPayment_ClassFeeBreakup" Association="FMSModel.FK_StudentPayment_ClassFeeBreakup">
+            <End Role="ClassFeeBreakup" EntitySet="ClassFeeBreakups" />
+            <End Role="StudentPayment" EntitySet="StudentPayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Receipt_PaymentMode" Association="FMSModel.FK_Receipt_PaymentMode">
+            <End Role="PaymentMode" EntitySet="PaymentModes" />
+            <End Role="Receipt" EntitySet="Receipts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentPayment_Receipt" Association="FMSModel.FK_StudentPayment_Receipt">
+            <End Role="Receipt" EntitySet="Receipts" />
+            <End Role="StudentPayment" EntitySet="StudentPayments" />
+          </AssociationSet>
+          <EntitySet Name="AcademicYears" EntityType="FMSModel.AcademicYear" />
+          <AssociationSet Name="FK_Receipt_AcademicYear" Association="FMSModel.FK_Receipt_AcademicYear">
+            <End Role="AcademicYear" EntitySet="AcademicYears" />
+            <End Role="Receipt" EntitySet="Receipts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentPayment_AcademicYear" Association="FMSModel.FK_StudentPayment_AcademicYear">
+            <End Role="AcademicYear" EntitySet="AcademicYears" />
+            <End Role="StudentPayment" EntitySet="StudentPayments" />
+          </AssociationSet>
+          <EntitySet Name="StudentStatus1" EntityType="FMSModel.StudentStatus" />
+          <EntitySet Name="FMSRoles" EntityType="FMSModel.FMSRole" />
+          <EntitySet Name="FMSUsers" EntityType="FMSModel.FMSUser" />
+          <EntitySet Name="Modules" EntityType="FMSModel.Module" />
+          <EntitySet Name="UserRoles" EntityType="FMSModel.UserRole" />
+          <AssociationSet Name="FK_UserRole_FMSRole" Association="FMSModel.FK_UserRole_FMSRole">
+            <End Role="FMSRole" EntitySet="FMSRoles" />
+            <End Role="UserRole" EntitySet="UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRole_FMSUser" Association="FMSModel.FK_UserRole_FMSUser">
+            <End Role="FMSUser" EntitySet="FMSUsers" />
+            <End Role="UserRole" EntitySet="UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FMSRole_FMSUser" Association="FMSModel.FK_FMSRole_FMSUser">
+            <End Role="FMSUser" EntitySet="FMSUsers" />
+            <End Role="FMSRole" EntitySet="FMSRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FMSRole_FMSUser1" Association="FMSModel.FK_FMSRole_FMSUser1">
+            <End Role="FMSUser" EntitySet="FMSUsers" />
+            <End Role="FMSRole" EntitySet="FMSRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FMSUser_FMSUser" Association="FMSModel.FK_FMSUser_FMSUser">
+            <End Role="FMSUser" EntitySet="FMSUsers" />
+            <End Role="FMSUser1" EntitySet="FMSUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FMSUser_FMSUser1" Association="FMSModel.FK_FMSUser_FMSUser1">
+            <End Role="FMSUser" EntitySet="FMSUsers" />
+            <End Role="FMSUser1" EntitySet="FMSUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRole_FMSUser1" Association="FMSModel.FK_UserRole_FMSUser1">
+            <End Role="FMSUser" EntitySet="FMSUsers" />
+            <End Role="UserRole" EntitySet="UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRole_FMSUser2" Association="FMSModel.FK_UserRole_FMSUser2">
+            <End Role="FMSUser" EntitySet="FMSUsers" />
+            <End Role="UserRole" EntitySet="UserRoles" />
+          </AssociationSet>
+          <EntitySet Name="RoleModules" EntityType="FMSModel.RoleModule" />
+          <AssociationSet Name="FK_RoleModule_FMSRole" Association="FMSModel.FK_RoleModule_FMSRole">
+            <End Role="FMSRole" EntitySet="FMSRoles" />
+            <End Role="RoleModule" EntitySet="RoleModules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoleModule_FMSUser" Association="FMSModel.FK_RoleModule_FMSUser">
+            <End Role="FMSUser" EntitySet="FMSUsers" />
+            <End Role="RoleModule" EntitySet="RoleModules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoleModule_FMSUser1" Association="FMSModel.FK_RoleModule_FMSUser1">
+            <End Role="FMSUser" EntitySet="FMSUsers" />
+            <End Role="RoleModule" EntitySet="RoleModules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoleModule_Module" Association="FMSModel.FK_RoleModule_Module">
+            <End Role="Module" EntitySet="Modules" />
+            <End Role="RoleModule" EntitySet="RoleModules" />
+          </AssociationSet>
+          <EntitySet Name="UserSchools" EntityType="FMSModel.UserSchool" />
+          <AssociationSet Name="FK_UserSchool_FMSUser" Association="FMSModel.FK_UserSchool_FMSUser">
+            <End Role="FMSUser" EntitySet="FMSUsers" />
+            <End Role="UserSchool" EntitySet="UserSchools" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserSchool_FMSUser1" Association="FMSModel.FK_UserSchool_FMSUser1">
+            <End Role="FMSUser" EntitySet="FMSUsers" />
+            <End Role="UserSchool" EntitySet="UserSchools" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserSchool_FMSUser2" Association="FMSModel.FK_UserSchool_FMSUser2">
+            <End Role="FMSUser" EntitySet="FMSUsers" />
+            <End Role="UserSchool" EntitySet="UserSchools" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserSchool_School" Association="FMSModel.FK_UserSchool_School">
+            <End Role="School" EntitySet="Schools" />
+            <End Role="UserSchool" EntitySet="UserSchools" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Class_School" Association="FMSModel.FK_Class_School">
+            <End Role="School" EntitySet="Schools" />
+            <End Role="Class" EntitySet="Classes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClassFeeBreakup_ClassFeeBreakup" Association="FMSModel.FK_ClassFeeBreakup_ClassFeeBreakup">
+            <End Role="StudentQuota" EntitySet="StudentQuotas" />
+            <End Role="ClassFeeBreakup" EntitySet="ClassFeeBreakups" />
+          </AssociationSet>
+          <EntitySet Name="ClassQuotaTotalFees" EntityType="FMSModel.ClassQuotaTotalFee" />
+          <EntitySet Name="Students" EntityType="FMSModel.Student" />
+          <AssociationSet Name="FK_Student_AcademicYear" Association="FMSModel.FK_Student_AcademicYear">
+            <End Role="AcademicYear" EntitySet="AcademicYears" />
+            <End Role="Student" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_Class" Association="FMSModel.FK_Student_Class">
+            <End Role="Class" EntitySet="Classes" />
+            <End Role="Student" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_School" Association="FMSModel.FK_Student_School">
+            <End Role="School" EntitySet="Schools" />
+            <End Role="Student" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_StudentQuota" Association="FMSModel.FK_Student_StudentQuota">
+            <End Role="StudentQuota" EntitySet="StudentQuotas" />
+            <End Role="Student" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_StudentStatus" Association="FMSModel.FK_Student_StudentStatus">
+            <End Role="StudentStatus" EntitySet="StudentStatus1" />
+            <End Role="Student" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentPayment_Student" Association="FMSModel.FK_StudentPayment_Student">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="StudentPayment" EntitySet="StudentPayments" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="Class">
+          <Key>
+            <PropertyRef Name="ClassId" />
+          </Key>
+          <Property Name="ClassId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClassName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ClassDisplayName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DisplayOrder" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ClassFeeBreakups" Relationship="FMSModel.FK_ClassFeeBreakup_Class" FromRole="Class" ToRole="ClassFeeBreakup" />
+          <Property Name="SchoolId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="School" Relationship="FMSModel.FK_Class_School" FromRole="Class" ToRole="School" />
+          <NavigationProperty Name="Students" Relationship="FMSModel.FK_Student_Class" FromRole="Class" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="ClassFeeBreakup">
+          <Key>
+            <PropertyRef Name="ClassFeeBreakupId" />
+          </Key>
+          <Property Name="ClassFeeBreakupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClassId" Type="Int32" Nullable="false" />
+          <Property Name="FeeTypeId" Type="Int32" Nullable="false" />
+          <Property Name="Month" Type="Byte" />
+          <Property Name="TotalAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Class" Relationship="FMSModel.FK_ClassFeeBreakup_Class" FromRole="ClassFeeBreakup" ToRole="Class" />
+          <NavigationProperty Name="FeeType" Relationship="FMSModel.FK_ClassFeeBreakup_FeeType" FromRole="ClassFeeBreakup" ToRole="FeeType" />
+          <NavigationProperty Name="StudentPayments" Relationship="FMSModel.FK_StudentPayment_ClassFeeBreakup" FromRole="ClassFeeBreakup" ToRole="StudentPayment" />
+          <Property Name="QuotaId" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="StudentQuota" Relationship="FMSModel.FK_ClassFeeBreakup_ClassFeeBreakup" FromRole="ClassFeeBreakup" ToRole="StudentQuota" />
+        </EntityType>
+        <EntityType Name="FeeType">
+          <Key>
+            <PropertyRef Name="FeeTypeId" />
+          </Key>
+          <Property Name="FeeTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FeeTypeName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FeeTypeDisplayName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FeeFactor" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ClassFeeBreakups" Relationship="FMSModel.FK_ClassFeeBreakup_FeeType" FromRole="FeeType" ToRole="ClassFeeBreakup" />
+          <Property Name="Priority" Type="Byte" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PaymentMode">
+          <Key>
+            <PropertyRef Name="PaymentModeId" />
+          </Key>
+          <Property Name="PaymentModeId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PaymentMode1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Receipts" Relationship="FMSModel.FK_Receipt_PaymentMode" FromRole="PaymentMode" ToRole="Receipt" />
+        </EntityType>
+        <EntityType Name="Receipt">
+          <Key>
+            <PropertyRef Name="ReceiptId" />
+          </Key>
+          <Property Name="ReceiptId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReceiptName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="PaymentModeId" Type="Byte" Nullable="false" />
+          <Property Name="ChequeNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="PaymentMode" Relationship="FMSModel.FK_Receipt_PaymentMode" FromRole="Receipt" ToRole="PaymentMode" />
+          <NavigationProperty Name="StudentPayments" Relationship="FMSModel.FK_StudentPayment_Receipt" FromRole="Receipt" ToRole="StudentPayment" />
+          <Property Name="Balance" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="AcademicYearId" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="AcademicYear" Relationship="FMSModel.FK_Receipt_AcademicYear" FromRole="Receipt" ToRole="AcademicYear" />
+        </EntityType>
+        <EntityType Name="School">
+          <Key>
+            <PropertyRef Name="SchoolId" />
+          </Key>
+          <Property Name="SchoolId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SchoolName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SchoolDisplayName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="UserSchools" Relationship="FMSModel.FK_UserSchool_School" FromRole="School" ToRole="UserSchool" />
+          <NavigationProperty Name="Classes" Relationship="FMSModel.FK_Class_School" FromRole="School" ToRole="Class" />
+          <NavigationProperty Name="Students" Relationship="FMSModel.FK_Student_School" FromRole="School" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="StudentPayment">
+          <Key>
+            <PropertyRef Name="StudentPaymentId" />
+          </Key>
+          <Property Name="StudentPaymentId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentId" Type="Int32" Nullable="false" />
+          <Property Name="ReceiptId" Type="Int64" Nullable="false" />
+          <Property Name="ClassFeeBreakupId" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ClassFeeBreakup" Relationship="FMSModel.FK_StudentPayment_ClassFeeBreakup" FromRole="StudentPayment" ToRole="ClassFeeBreakup" />
+          <NavigationProperty Name="Receipt" Relationship="FMSModel.FK_StudentPayment_Receipt" FromRole="StudentPayment" ToRole="Receipt" />
+          <Property Name="AcademicYearId" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="AcademicYear" Relationship="FMSModel.FK_StudentPayment_AcademicYear" FromRole="StudentPayment" ToRole="AcademicYear" />
+          <NavigationProperty Name="Student" Relationship="FMSModel.FK_StudentPayment_Student" FromRole="StudentPayment" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="StudentQuota">
+          <Key>
+            <PropertyRef Name="StudentQuotaId" />
+          </Key>
+          <Property Name="StudentQuotaId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentQuotaName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StudentQuotaDisplayName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ClassFeeBreakups" Relationship="FMSModel.FK_ClassFeeBreakup_ClassFeeBreakup" FromRole="StudentQuota" ToRole="ClassFeeBreakup" />
+          <NavigationProperty Name="Students" Relationship="FMSModel.FK_Student_StudentQuota" FromRole="StudentQuota" ToRole="Student" />
+        </EntityType>
+        <Association Name="FK_ClassFeeBreakup_Class">
+          <End Type="FMSModel.Class" Role="Class" Multiplicity="1" />
+          <End Type="FMSModel.ClassFeeBreakup" Role="ClassFeeBreakup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="ClassId" />
+            </Principal>
+            <Dependent Role="ClassFeeBreakup">
+              <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClassFeeBreakup_FeeType">
+          <End Type="FMSModel.FeeType" Role="FeeType" Multiplicity="1" />
+          <End Type="FMSModel.ClassFeeBreakup" Role="ClassFeeBreakup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FeeType">
+              <PropertyRef Name="FeeTypeId" />
+            </Principal>
+            <Dependent Role="ClassFeeBreakup">
+              <PropertyRef Name="FeeTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentPayment_ClassFeeBreakup">
+          <End Type="FMSModel.ClassFeeBreakup" Role="ClassFeeBreakup" Multiplicity="1" />
+          <End Type="FMSModel.StudentPayment" Role="StudentPayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClassFeeBreakup">
+              <PropertyRef Name="ClassFeeBreakupId" />
+            </Principal>
+            <Dependent Role="StudentPayment">
+              <PropertyRef Name="ClassFeeBreakupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Receipt_PaymentMode">
+          <End Type="FMSModel.PaymentMode" Role="PaymentMode" Multiplicity="1" />
+          <End Type="FMSModel.Receipt" Role="Receipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentMode">
+              <PropertyRef Name="PaymentModeId" />
+            </Principal>
+            <Dependent Role="Receipt">
+              <PropertyRef Name="PaymentModeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentPayment_Receipt">
+          <End Type="FMSModel.Receipt" Role="Receipt" Multiplicity="1" />
+          <End Type="FMSModel.StudentPayment" Role="StudentPayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Receipt">
+              <PropertyRef Name="ReceiptId" />
+            </Principal>
+            <Dependent Role="StudentPayment">
+              <PropertyRef Name="ReceiptId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="AcademicYear">
+          <Key>
+            <PropertyRef Name="AcademicYearId" />
+          </Key>
+          <Property Name="AcademicYearId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AcademicYear1" Type="String" Nullable="false" MaxLength="9" FixedLength="true" Unicode="false" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="IsCurrent" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Receipts" Relationship="FMSModel.FK_Receipt_AcademicYear" FromRole="AcademicYear" ToRole="Receipt" />
+          <NavigationProperty Name="StudentPayments" Relationship="FMSModel.FK_StudentPayment_AcademicYear" FromRole="AcademicYear" ToRole="StudentPayment" />
+          <NavigationProperty Name="Students" Relationship="FMSModel.FK_Student_AcademicYear" FromRole="AcademicYear" ToRole="Student" />
+        </EntityType>
+        <Association Name="FK_Receipt_AcademicYear">
+          <End Type="FMSModel.AcademicYear" Role="AcademicYear" Multiplicity="1" />
+          <End Type="FMSModel.Receipt" Role="Receipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AcademicYear">
+              <PropertyRef Name="AcademicYearId" />
+            </Principal>
+            <Dependent Role="Receipt">
+              <PropertyRef Name="AcademicYearId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentPayment_AcademicYear">
+          <End Type="FMSModel.AcademicYear" Role="AcademicYear" Multiplicity="1" />
+          <End Type="FMSModel.StudentPayment" Role="StudentPayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AcademicYear">
+              <PropertyRef Name="AcademicYearId" />
+            </Principal>
+            <Dependent Role="StudentPayment">
+              <PropertyRef Name="AcademicYearId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="StudentStatus">
+          <Key>
+            <PropertyRef Name="StudentStatusId" />
+          </Key>
+          <Property Name="StudentStatusId" Type="Byte" Nullable="false" />
+          <Property Name="StatusName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StatusDispalyName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Students" Relationship="FMSModel.FK_Student_StudentStatus" FromRole="StudentStatus" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="FMSRole">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="UserRoles" Relationship="FMSModel.FK_UserRole_FMSRole" FromRole="FMSRole" ToRole="UserRole" />
+          <NavigationProperty Name="FMSUser" Relationship="FMSModel.FK_FMSRole_FMSUser" FromRole="FMSRole" ToRole="FMSUser" />
+          <NavigationProperty Name="FMSUser1" Relationship="FMSModel.FK_FMSRole_FMSUser1" FromRole="FMSRole" ToRole="FMSUser" />
+          <NavigationProperty Name="RoleModules" Relationship="FMSModel.FK_RoleModule_FMSRole" FromRole="FMSRole" ToRole="RoleModule" />
+        </EntityType>
+        <EntityType Name="FMSUser">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="UserRoles" Relationship="FMSModel.FK_UserRole_FMSUser" FromRole="FMSUser" ToRole="UserRole" />
+          <NavigationProperty Name="FMSRoles" Relationship="FMSModel.FK_FMSRole_FMSUser" FromRole="FMSUser" ToRole="FMSRole" />
+          <NavigationProperty Name="FMSRoles1" Relationship="FMSModel.FK_FMSRole_FMSUser1" FromRole="FMSUser" ToRole="FMSRole" />
+          <NavigationProperty Name="FMSUser1" Relationship="FMSModel.FK_FMSUser_FMSUser" FromRole="FMSUser" ToRole="FMSUser1" />
+          <NavigationProperty Name="FMSUser2" Relationship="FMSModel.FK_FMSUser_FMSUser" FromRole="FMSUser1" ToRole="FMSUser" />
+          <NavigationProperty Name="FMSUser11" Relationship="FMSModel.FK_FMSUser_FMSUser1" FromRole="FMSUser" ToRole="FMSUser1" />
+          <NavigationProperty Name="FMSUser3" Relationship="FMSModel.FK_FMSUser_FMSUser1" FromRole="FMSUser1" ToRole="FMSUser" />
+          <NavigationProperty Name="UserRoles1" Relationship="FMSModel.FK_UserRole_FMSUser1" FromRole="FMSUser" ToRole="UserRole" />
+          <NavigationProperty Name="UserRoles2" Relationship="FMSModel.FK_UserRole_FMSUser2" FromRole="FMSUser" ToRole="UserRole" />
+          <NavigationProperty Name="RoleModules" Relationship="FMSModel.FK_RoleModule_FMSUser" FromRole="FMSUser" ToRole="RoleModule" />
+          <NavigationProperty Name="RoleModules1" Relationship="FMSModel.FK_RoleModule_FMSUser1" FromRole="FMSUser" ToRole="RoleModule" />
+          <NavigationProperty Name="UserSchools" Relationship="FMSModel.FK_UserSchool_FMSUser" FromRole="FMSUser" ToRole="UserSchool" />
+          <NavigationProperty Name="UserSchools1" Relationship="FMSModel.FK_UserSchool_FMSUser1" FromRole="FMSUser" ToRole="UserSchool" />
+          <NavigationProperty Name="UserSchools2" Relationship="FMSModel.FK_UserSchool_FMSUser2" FromRole="FMSUser" ToRole="UserSchool" />
+        </EntityType>
+        <EntityType Name="Module">
+          <Key>
+            <PropertyRef Name="ModuleId" />
+          </Key>
+          <Property Name="ModuleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ModuleName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="RoleModules" Relationship="FMSModel.FK_RoleModule_Module" FromRole="Module" ToRole="RoleModule" />
+          <Property Name="ModuleDisplayName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="UserRoleId" />
+          </Key>
+          <Property Name="UserRoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="FMSRole" Relationship="FMSModel.FK_UserRole_FMSRole" FromRole="UserRole" ToRole="FMSRole" />
+          <NavigationProperty Name="FMSUser" Relationship="FMSModel.FK_UserRole_FMSUser" FromRole="UserRole" ToRole="FMSUser" />
+          <NavigationProperty Name="FMSUser1" Relationship="FMSModel.FK_UserRole_FMSUser1" FromRole="UserRole" ToRole="FMSUser" />
+          <NavigationProperty Name="FMSUser2" Relationship="FMSModel.FK_UserRole_FMSUser2" FromRole="UserRole" ToRole="FMSUser" />
+        </EntityType>
+        <Association Name="FK_UserRole_FMSRole">
+          <End Type="FMSModel.FMSRole" Role="FMSRole" Multiplicity="1" />
+          <End Type="FMSModel.UserRole" Role="UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSRole">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRole_FMSUser">
+          <End Type="FMSModel.FMSUser" Role="FMSUser" Multiplicity="1" />
+          <End Type="FMSModel.UserRole" Role="UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FMSRole_FMSUser">
+          <End Type="FMSModel.FMSUser" Role="FMSUser" Multiplicity="1" />
+          <End Type="FMSModel.FMSRole" Role="FMSRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="FMSRole">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FMSRole_FMSUser1">
+          <End Type="FMSModel.FMSUser" Role="FMSUser" Multiplicity="0..1" />
+          <End Type="FMSModel.FMSRole" Role="FMSRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="FMSRole">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FMSUser_FMSUser">
+          <End Type="FMSModel.FMSUser" Role="FMSUser" Multiplicity="1" />
+          <End Type="FMSModel.FMSUser" Role="FMSUser1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="FMSUser1">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FMSUser_FMSUser1">
+          <End Type="FMSModel.FMSUser" Role="FMSUser" Multiplicity="0..1" />
+          <End Type="FMSModel.FMSUser" Role="FMSUser1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="FMSUser1">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRole_FMSUser1">
+          <End Type="FMSModel.FMSUser" Role="FMSUser" Multiplicity="1" />
+          <End Type="FMSModel.UserRole" Role="UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRole_FMSUser2">
+          <End Type="FMSModel.FMSUser" Role="FMSUser" Multiplicity="0..1" />
+          <End Type="FMSModel.UserRole" Role="UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="RoleModule">
+          <Key>
+            <PropertyRef Name="RoleModuleId" />
+          </Key>
+          <Property Name="RoleModuleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <Property Name="ModuleId" Type="Int32" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="FMSRole" Relationship="FMSModel.FK_RoleModule_FMSRole" FromRole="RoleModule" ToRole="FMSRole" />
+          <NavigationProperty Name="FMSUser" Relationship="FMSModel.FK_RoleModule_FMSUser" FromRole="RoleModule" ToRole="FMSUser" />
+          <NavigationProperty Name="FMSUser1" Relationship="FMSModel.FK_RoleModule_FMSUser1" FromRole="RoleModule" ToRole="FMSUser" />
+          <NavigationProperty Name="Module" Relationship="FMSModel.FK_RoleModule_Module" FromRole="RoleModule" ToRole="Module" />
+        </EntityType>
+        <Association Name="FK_RoleModule_FMSRole">
+          <End Type="FMSModel.FMSRole" Role="FMSRole" Multiplicity="1" />
+          <End Type="FMSModel.RoleModule" Role="RoleModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSRole">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="RoleModule">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoleModule_FMSUser">
+          <End Type="FMSModel.FMSUser" Role="FMSUser" Multiplicity="1" />
+          <End Type="FMSModel.RoleModule" Role="RoleModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="RoleModule">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoleModule_FMSUser1">
+          <End Type="FMSModel.FMSUser" Role="FMSUser" Multiplicity="0..1" />
+          <End Type="FMSModel.RoleModule" Role="RoleModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="RoleModule">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoleModule_Module">
+          <End Type="FMSModel.Module" Role="Module" Multiplicity="1" />
+          <End Type="FMSModel.RoleModule" Role="RoleModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Module">
+              <PropertyRef Name="ModuleId" />
+            </Principal>
+            <Dependent Role="RoleModule">
+              <PropertyRef Name="ModuleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="UserSchool">
+          <Key>
+            <PropertyRef Name="UserSchoolId" />
+          </Key>
+          <Property Name="UserSchoolId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="SchoolId" Type="Int32" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="FMSUser" Relationship="FMSModel.FK_UserSchool_FMSUser" FromRole="UserSchool" ToRole="FMSUser" />
+          <NavigationProperty Name="FMSUser1" Relationship="FMSModel.FK_UserSchool_FMSUser1" FromRole="UserSchool" ToRole="FMSUser" />
+          <NavigationProperty Name="FMSUser2" Relationship="FMSModel.FK_UserSchool_FMSUser2" FromRole="UserSchool" ToRole="FMSUser" />
+          <NavigationProperty Name="School" Relationship="FMSModel.FK_UserSchool_School" FromRole="UserSchool" ToRole="School" />
+        </EntityType>
+        <Association Name="FK_UserSchool_FMSUser">
+          <End Type="FMSModel.FMSUser" Role="FMSUser" Multiplicity="1" />
+          <End Type="FMSModel.UserSchool" Role="UserSchool" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserSchool">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserSchool_FMSUser1">
+          <End Type="FMSModel.FMSUser" Role="FMSUser" Multiplicity="1" />
+          <End Type="FMSModel.UserSchool" Role="UserSchool" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserSchool">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserSchool_FMSUser2">
+          <End Type="FMSModel.FMSUser" Role="FMSUser" Multiplicity="0..1" />
+          <End Type="FMSModel.UserSchool" Role="UserSchool" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FMSUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserSchool">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserSchool_School">
+          <End Type="FMSModel.School" Role="School" Multiplicity="1" />
+          <End Type="FMSModel.UserSchool" Role="UserSchool" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="School">
+              <PropertyRef Name="SchoolId" />
+            </Principal>
+            <Dependent Role="UserSchool">
+              <PropertyRef Name="SchoolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Class_School">
+          <End Type="FMSModel.School" Role="School" Multiplicity="1" />
+          <End Type="FMSModel.Class" Role="Class" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="School">
+              <PropertyRef Name="SchoolId" />
+            </Principal>
+            <Dependent Role="Class">
+              <PropertyRef Name="SchoolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClassFeeBreakup_ClassFeeBreakup">
+          <End Type="FMSModel.StudentQuota" Role="StudentQuota" Multiplicity="1" />
+          <End Type="FMSModel.ClassFeeBreakup" Role="ClassFeeBreakup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentQuota">
+              <PropertyRef Name="StudentQuotaId" />
+            </Principal>
+            <Dependent Role="ClassFeeBreakup">
+              <PropertyRef Name="QuotaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ClassQuotaTotalFee">
+          <Key>
+            <PropertyRef Name="ClassQuotaTotalFeeId" />
+          </Key>
+          <Property Name="ClassQuotaTotalFeeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClassId" Type="Int32" Nullable="false" />
+          <Property Name="QuotaId" Type="Byte" Nullable="false" />
+          <Property Name="TotalFee" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="AcademicYearId" Type="Byte" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="StudentId" />
+          </Key>
+          <Property Name="StudentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentRegistartionNo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ClassId" Type="Int32" Nullable="false" />
+          <Property Name="SchoolId" Type="Int32" Nullable="false" />
+          <Property Name="Gender" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="StudentLastName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="StudentFirstName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="StudentMiddleName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DOB" Type="DateTime" Precision="0" />
+          <Property Name="BirthAddress" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ReligionAndCast" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="StudentQuotaId" Type="Byte" Nullable="false" />
+          <Property Name="ParentLastName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ParentFirstName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ParentMiddleName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CurrentAddress" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="CantactNumbers" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PermanentAddress" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ParentOccuapation" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AnnualIncom" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="RelationWithStudent" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PreviousSchool" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LastPassedClass" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LastPassedYear" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="LastClassMarks" Type="Int32" />
+          <Property Name="LastClassTotalMarks" Type="Int32" />
+          <Property Name="LastClassPercentage" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="AdmissionDate" Type="DateTime" Precision="0" />
+          <Property Name="AdmissionAcademicYearId" Type="Byte" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="StatusId" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="AcademicYear" Relationship="FMSModel.FK_Student_AcademicYear" FromRole="Student" ToRole="AcademicYear" />
+          <NavigationProperty Name="Class" Relationship="FMSModel.FK_Student_Class" FromRole="Student" ToRole="Class" />
+          <NavigationProperty Name="School" Relationship="FMSModel.FK_Student_School" FromRole="Student" ToRole="School" />
+          <NavigationProperty Name="StudentQuota" Relationship="FMSModel.FK_Student_StudentQuota" FromRole="Student" ToRole="StudentQuota" />
+          <NavigationProperty Name="StudentStatu" Relationship="FMSModel.FK_Student_StudentStatus" FromRole="Student" ToRole="StudentStatus" />
+          <NavigationProperty Name="StudentPayments" Relationship="FMSModel.FK_StudentPayment_Student" FromRole="Student" ToRole="StudentPayment" />
+        </EntityType>
+        <Association Name="FK_Student_AcademicYear">
+          <End Type="FMSModel.AcademicYear" Role="AcademicYear" Multiplicity="1" />
+          <End Type="FMSModel.Student" Role="Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AcademicYear">
+              <PropertyRef Name="AcademicYearId" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="AdmissionAcademicYearId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_Class">
+          <End Type="FMSModel.Class" Role="Class" Multiplicity="1" />
+          <End Type="FMSModel.Student" Role="Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="ClassId" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_School">
+          <End Type="FMSModel.School" Role="School" Multiplicity="1" />
+          <End Type="FMSModel.Student" Role="Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="School">
+              <PropertyRef Name="SchoolId" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="SchoolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_StudentQuota">
+          <End Type="FMSModel.StudentQuota" Role="StudentQuota" Multiplicity="1" />
+          <End Type="FMSModel.Student" Role="Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentQuota">
+              <PropertyRef Name="StudentQuotaId" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="StudentQuotaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_StudentStatus">
+          <End Type="FMSModel.StudentStatus" Role="StudentStatus" Multiplicity="1" />
+          <End Type="FMSModel.Student" Role="Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentStatus">
+              <PropertyRef Name="StudentStatusId" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentPayment_Student">
+          <End Type="FMSModel.Student" Role="Student" Multiplicity="1" />
+          <End Type="FMSModel.StudentPayment" Role="StudentPayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="StudentId" />
+            </Principal>
+            <Dependent Role="StudentPayment">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FMSModelStoreContainer" CdmEntityContainer="FMSEntities" >
+          <EntitySetMapping Name="Classes">
+            <EntityTypeMapping TypeName="FMSModel.Class">
+              <MappingFragment StoreEntitySet="Class">
+                <ScalarProperty Name="SchoolId" ColumnName="SchoolId" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+                <ScalarProperty Name="ClassDisplayName" ColumnName="ClassDisplayName" />
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClassFeeBreakups">
+            <EntityTypeMapping TypeName="FMSModel.ClassFeeBreakup">
+              <MappingFragment StoreEntitySet="ClassFeeBreakup">
+                <ScalarProperty Name="QuotaId" ColumnName="QuotaId" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="FeeTypeId" ColumnName="FeeTypeId" />
+                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+                <ScalarProperty Name="ClassFeeBreakupId" ColumnName="ClassFeeBreakupId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FeeTypes">
+            <EntityTypeMapping TypeName="FMSModel.FeeType">
+              <MappingFragment StoreEntitySet="FeeType">
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="FeeFactor" ColumnName="FeeFactor" />
+                <ScalarProperty Name="FeeTypeDisplayName" ColumnName="FeeTypeDisplayName" />
+                <ScalarProperty Name="FeeTypeName" ColumnName="FeeTypeName" />
+                <ScalarProperty Name="FeeTypeId" ColumnName="FeeTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PaymentModes">
+            <EntityTypeMapping TypeName="FMSModel.PaymentMode">
+              <MappingFragment StoreEntitySet="PaymentMode">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="PaymentMode1" ColumnName="PaymentMode" />
+                <ScalarProperty Name="PaymentModeId" ColumnName="PaymentModeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Receipts">
+            <EntityTypeMapping TypeName="FMSModel.Receipt">
+              <MappingFragment StoreEntitySet="Receipt">
+                <ScalarProperty Name="AcademicYearId" ColumnName="AcademicYearId" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ChequeNumber" ColumnName="ChequeNumber" />
+                <ScalarProperty Name="PaymentModeId" ColumnName="PaymentModeId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="ReceiptName" ColumnName="ReceiptName" />
+                <ScalarProperty Name="ReceiptId" ColumnName="ReceiptId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Schools">
+            <EntityTypeMapping TypeName="FMSModel.School">
+              <MappingFragment StoreEntitySet="School">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="SchoolDisplayName" ColumnName="SchoolDisplayName" />
+                <ScalarProperty Name="SchoolName" ColumnName="SchoolName" />
+                <ScalarProperty Name="SchoolId" ColumnName="SchoolId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentPayments">
+            <EntityTypeMapping TypeName="FMSModel.StudentPayment">
+              <MappingFragment StoreEntitySet="StudentPayment">
+                <ScalarProperty Name="AcademicYearId" ColumnName="AcademicYearId" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="ClassFeeBreakupId" ColumnName="ClassFeeBreakupId" />
+                <ScalarProperty Name="ReceiptId" ColumnName="ReceiptId" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="StudentPaymentId" ColumnName="StudentPaymentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentQuotas">
+            <EntityTypeMapping TypeName="FMSModel.StudentQuota">
+              <MappingFragment StoreEntitySet="StudentQuota">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="StudentQuotaDisplayName" ColumnName="StudentQuotaDisplayName" />
+                <ScalarProperty Name="StudentQuotaName" ColumnName="StudentQuotaName" />
+                <ScalarProperty Name="StudentQuotaId" ColumnName="StudentQuotaId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AcademicYears">
+            <EntityTypeMapping TypeName="FMSModel.AcademicYear">
+              <MappingFragment StoreEntitySet="AcademicYear">
+                <ScalarProperty Name="IsCurrent" ColumnName="IsCurrent" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="AcademicYear1" ColumnName="AcademicYear" />
+                <ScalarProperty Name="AcademicYearId" ColumnName="AcademicYearId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentStatus1">
+            <EntityTypeMapping TypeName="FMSModel.StudentStatus">
+              <MappingFragment StoreEntitySet="StudentStatus">
+                <ScalarProperty Name="StatusDispalyName" ColumnName="StatusDispalyName" />
+                <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+                <ScalarProperty Name="StudentStatusId" ColumnName="StudentStatusId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FMSRoles">
+            <EntityTypeMapping TypeName="FMSModel.FMSRole">
+              <MappingFragment StoreEntitySet="FMSRole">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FMSUsers">
+            <EntityTypeMapping TypeName="FMSModel.FMSUser">
+              <MappingFragment StoreEntitySet="FMSUser">
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Modules">
+            <EntityTypeMapping TypeName="FMSModel.Module">
+              <MappingFragment StoreEntitySet="Module">
+                <ScalarProperty Name="ModuleDisplayName" ColumnName="ModuleDisplayName" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ModuleName" ColumnName="ModuleName" />
+                <ScalarProperty Name="ModuleId" ColumnName="ModuleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRoles">
+            <EntityTypeMapping TypeName="FMSModel.UserRole">
+              <MappingFragment StoreEntitySet="UserRole">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserRoleId" ColumnName="UserRoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoleModules">
+            <EntityTypeMapping TypeName="FMSModel.RoleModule">
+              <MappingFragment StoreEntitySet="RoleModule">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModuleId" ColumnName="ModuleId" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="RoleModuleId" ColumnName="RoleModuleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserSchools">
+            <EntityTypeMapping TypeName="FMSModel.UserSchool">
+              <MappingFragment StoreEntitySet="UserSchool">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="SchoolId" ColumnName="SchoolId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserSchoolId" ColumnName="UserSchoolId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClassQuotaTotalFees">
+            <EntityTypeMapping TypeName="FMSModel.ClassQuotaTotalFee">
+              <MappingFragment StoreEntitySet="ClassQuotaTotalFee">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AcademicYearId" ColumnName="AcademicYearId" />
+                <ScalarProperty Name="TotalFee" ColumnName="TotalFee" />
+                <ScalarProperty Name="QuotaId" ColumnName="QuotaId" />
+                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+                <ScalarProperty Name="ClassQuotaTotalFeeId" ColumnName="ClassQuotaTotalFeeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Students">
+            <EntityTypeMapping TypeName="FMSModel.Student">
+              <MappingFragment StoreEntitySet="Student">
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="AdmissionAcademicYearId" ColumnName="AdmissionAcademicYearId" />
+                <ScalarProperty Name="AdmissionDate" ColumnName="AdmissionDate" />
+                <ScalarProperty Name="LastClassPercentage" ColumnName="LastClassPercentage" />
+                <ScalarProperty Name="LastClassTotalMarks" ColumnName="LastClassTotalMarks" />
+                <ScalarProperty Name="LastClassMarks" ColumnName="LastClassMarks" />
+                <ScalarProperty Name="LastPassedYear" ColumnName="LastPassedYear" />
+                <ScalarProperty Name="LastPassedClass" ColumnName="LastPassedClass" />
+                <ScalarProperty Name="PreviousSchool" ColumnName="PreviousSchool" />
+                <ScalarProperty Name="RelationWithStudent" ColumnName="RelationWithStudent" />
+                <ScalarProperty Name="AnnualIncom" ColumnName="AnnualIncom" />
+                <ScalarProperty Name="ParentOccuapation" ColumnName="ParentOccuapation" />
+                <ScalarProperty Name="PermanentAddress" ColumnName="PermanentAddress" />
+                <ScalarProperty Name="CantactNumbers" ColumnName="CantactNumbers" />
+                <ScalarProperty Name="CurrentAddress" ColumnName="CurrentAddress" />
+                <ScalarProperty Name="ParentMiddleName" ColumnName="ParentMiddleName" />
+                <ScalarProperty Name="ParentFirstName" ColumnName="ParentFirstName" />
+                <ScalarProperty Name="ParentLastName" ColumnName="ParentLastName" />
+                <ScalarProperty Name="StudentQuotaId" ColumnName="StudentQuotaId" />
+                <ScalarProperty Name="ReligionAndCast" ColumnName="ReligionAndCast" />
+                <ScalarProperty Name="BirthAddress" ColumnName="BirthAddress" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="StudentMiddleName" ColumnName="StudentMiddleName" />
+                <ScalarProperty Name="StudentFirstName" ColumnName="StudentFirstName" />
+                <ScalarProperty Name="StudentLastName" ColumnName="StudentLastName" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="SchoolId" ColumnName="SchoolId" />
+                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+                <ScalarProperty Name="StudentRegistartionNo" ColumnName="StudentRegistartionNo" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

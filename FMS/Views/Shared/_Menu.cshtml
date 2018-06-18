@@ -1,0 +1,59 @@
+﻿@{
+    String[] roles = Roles.GetRolesForUser();
+    var dd = roles;
+    var Dashboard = roles.Any(x => x == "Dashboard");
+    var CAFinancialReport = roles.Any(x => x == "CAFinancialReport");
+    var FeeCollectionReport = roles.Any(x => x == "FeeCollectionReport");
+    var CreateUser = roles.Any(x => x == "CreateUser");
+    var ReceivePayment = roles.Any(x => x == "ReceivePayment");
+    var CreateStudent = roles.Any(x => x == "CreateStudent");
+    var DeleteStudent = roles.Any(x => x == "DeleteStudent");
+    var CreateClass = roles.Any(x => x == "CreateClass");
+
+
+}
+<ul class="nav navbar-nav">
+    @if (Dashboard)
+    {
+        <li>@Html.ActionLink("Dashboard", "Index", "Dashboard")</li>
+    }
+    @if (ReceivePayment)
+    {
+        <li>@Html.ActionLink("Receive Payment", "Index", "Payment")</li>
+    }
+    @if (CreateStudent)
+    {
+        <li>@Html.ActionLink("Students", "Index", "Students")</li>
+    }
+    @if (CAFinancialReport || FeeCollectionReport)
+    {
+        <li class="dropdown dropdown-submenu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports</a>
+            <ul class="dropdown-menu">
+                @if (CAFinancialReport)
+                {
+                    <li>@Html.ActionLink("CA Financial Report", "CAFinancialReport", "Report")</li>
+                }
+                @if (FeeCollectionReport)
+                {
+                    <li>@Html.ActionLink("Fee Collection Report", "FeeCollectionReport", "Report")</li>
+                }
+            </ul>
+        </li>
+    }
+    @if (CreateClass)
+    {
+        <li>@Html.ActionLink("Classes", "Index", "Classes")</li>
+    }
+    @if (CreateUser)
+    {
+        <li class="dropdown dropdown-submenu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">User Access</a>
+            <ul class="dropdown-menu">
+                <li>@Html.ActionLink("Users", "Index", "Users")</li>
+                <li>@Html.ActionLink("Roles", "Index", "FMSRoles")</li>
+
+            </ul>
+        </li>
+    }
+</ul>

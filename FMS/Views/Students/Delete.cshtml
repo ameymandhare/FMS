@@ -1,0 +1,289 @@
+﻿@model FMS.Student
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Student</h4>
+    <hr />
+      <dl class="dl-horizontal">
+        <dt>
+            Student Registartion No
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StudentRegistartionNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Gender)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Gender)
+        </dd>
+
+        <dt>
+            Student Last Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StudentLastName)
+        </dd>
+
+        <dt>
+            Student First Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StudentFirstName)
+        </dd>
+
+        <dt>
+            Student Middle Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StudentMiddleName)
+        </dd>
+
+        <dt>
+            Date of Birth
+        </dt>
+
+        <dd>
+            @Convert.ToString(string.Format("{0:dd-MMM-yyyy}", Model.DOB))
+        </dd>
+
+        <dt>
+            Birth Address
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BirthAddress)
+        </dd>
+
+        <dt>
+            Religion And Cast
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReligionAndCast)
+        </dd>
+
+        <dt>
+            Parent Last Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ParentLastName)
+        </dd>
+
+        <dt>
+            Parent First Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ParentFirstName)
+        </dd>
+
+        <dt>
+            Parent Middle Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ParentMiddleName)
+        </dd>
+
+        <dt>
+            Annual Income
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AnnualIncom)
+        </dd>
+
+        <dt>
+            Relation With Student
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RelationWithStudent)
+        </dd>
+
+        <dt>
+            Previous School
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PreviousSchool)
+        </dd>
+
+        <dt>
+            Last Passed Class
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastPassedClass)
+        </dd>
+
+        <dt>
+            Last Passed Year
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastPassedYear)
+        </dd>
+
+        <dt>
+            Last Class Marks
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastClassMarks)
+        </dd>
+
+        <dt>
+            Last Class Total Marks
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastClassTotalMarks)
+        </dd>
+
+        <dt>
+            Last Class Percentage
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastClassPercentage)
+        </dd>
+
+        <dt>
+            Admission Date
+        </dt>
+
+        <dd>
+            @Convert.ToString(string.Format("{0:dd-MMM-yyyy}", Model.AdmissionDate))
+        </dd>
+
+        <dt>
+            Created Date
+        </dt>
+
+        <dd>
+            @Convert.ToString(string.Format("{0:dd-MMM-yyyy hh:mm tt}", Model.CreatedDate))
+        </dd>
+
+        <dt>
+            Created By
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+
+        <dt>
+            Modified Date
+        </dt>
+
+        <dd>
+            @Convert.ToString(string.Format("{0:dd-MMM-yyyy hh:mm tt}", Model.ModifiedDate))
+        </dd>
+
+        <dt>
+            Modified By
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedBy)
+        </dd>
+
+        <dt>
+            Current Address
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CurrentAddress)
+        </dd>
+
+        <dt>
+            Cantact Numbers
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CantactNumbers)
+        </dd>
+
+        <dt>
+            Permanent Address
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PermanentAddress)
+        </dd>
+
+        <dt>
+           Parent ccuapation
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ParentOccuapation)
+        </dd>
+
+        <dt>
+            Class Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Class.ClassName)
+        </dd>
+
+        <dt>
+           School Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.School.SchoolName)
+        </dd>
+
+        <dt>
+           Student Quota
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StudentQuota.StudentQuotaName)
+        </dd>
+
+        <dt>
+           Admission Academic Year
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AcademicYear.AcademicYear1)
+        </dd>
+
+        <dt>
+           Status
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StudentStatu.StatusName)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

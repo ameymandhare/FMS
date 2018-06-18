@@ -1,0 +1,133 @@
+﻿@model IEnumerable<FMS.Models.UserViewModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModifiedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModifiedDate)
+        </th>
+        <th>
+            Schools
+        </th>
+        <th>
+            Roles
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedBy)
+            </td>
+            <td>
+                @item.CreatedDate.ToString("dd-MMM-yyyy hh:mm tt")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModifiedBy)
+            </td>
+            <td>
+                @Convert.ToString(string.Format("{0:dd-MMM-yyyy hh:mm tt}", item.ModifiedDate))
+            </td>
+            <td>
+                @{
+                    var str = new System.Text.StringBuilder();
+                    string schools = string.Empty;
+                    foreach (var r in item.UserSchools)
+                    {
+                        str = str.Append(r.SchoolName + ", ");
+
+                    }
+                }
+                @if (str.Length > 0)
+                {
+                    schools = str.ToString().Remove(str.Length - 2, 2);
+                }
+                @schools
+            </td>
+
+            <td>
+                @{
+                    var str1 = new System.Text.StringBuilder();
+                    string roles = string.Empty;
+                    foreach (var r in item.UserRoles)
+                    {
+                        str1 = str1.Append(r.RoleName + ", ");
+
+                    }
+                }
+                @if (str1.Length > 0)
+                {
+                    roles = str1.ToString().Remove(str1.Length - 2, 2);
+                }
+                @roles
+            </td>
+            <td>
+                @Convert.ToString(item.IsActive)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.UserId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.UserId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.UserId }) |
+                <a href="#" class="delete-receipt" data-user-id=@item.UserId>Reset Password</a>
+            </td>
+        </tr>
+                    }
+
+</table>
+@section Scripts
+{
+    <script type="text/javascript">
+        $(".delete-receipt").click(function () {
+
+            var result = confirm("Are you sure you want to reset password?");
+            if (result) {
+                var userId = $(this).data("userId");
+                var url = "@Url.Content("~/Users/ResetPassword?userId=")" + userId;
+                $.ajax({
+                    url: url,
+                    dataType: 'text',
+                    type: 'post',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: userId,
+                    success: function (data) {
+                        alert("Password reset.");
+                    },
+                    error: function (jqXhr, textStatus, errorThrown) {
+                        alert("error");
+                    }
+                });
+            }
+        });
+
+
+    </script>
+}

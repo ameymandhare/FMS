@@ -1,0 +1,148 @@
+﻿@model IEnumerable<FMS.Models.StudentFeeViewModel>
+{
+    Layout = null;
+
+}
+@{
+    String[] roles = Roles.GetRolesForUser();
+    var ReceivePayment = roles.Any(x => x == "ReceivePayment");
+}
+@section css{
+    <style>
+        .modal-body .search-section {
+            padding-bottom: 30px;
+            overflow: hidden;
+        }
+
+            .modal-body .search-section input.form-control {
+                max-width: inherit;
+            }
+
+            .modal-body .search-section .btn {
+                width: 100%;
+            }
+
+            .modal-body .search-section *[class^="col-"],
+            .modal-body .search-section *[class*="col-"] {
+                padding: 0 5px;
+            }
+
+        .paid-text {
+            color: #71d560;
+        }
+
+        .un-paid-text {
+            color: #ff4b55;
+        }
+    </style>
+}
+<div class="modal-dialog modal-lg" style="width:100%;">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Students</h4>
+        </div>
+        <div class="modal-body">
+            @*<form class="search-section">
+                <div class="form-row pull-right col-md-6">
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" placeholder="Search" id="txtSearch">
+                    </div>
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-primary" id="btnSearch">Search</button>
+                    </div>
+                </div>
+            </form>*@
+            @Html.ActionLink("Export", "ExportStudentFeeStatus", "Dashboard",new { isPaid = Model.First().IsPaid,searchText="" }, htmlAttributes: new { @style = "float:right" })
+            <table class="table" id="students">
+                <tr>
+                    <th>
+                        @Html.DisplayName("Student Name")
+                    </th>
+                    <th>
+                        GR. No.
+                    </th>
+                    <th>
+                        @Html.DisplayName("Class")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Total Fee")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Paid")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Un-Paid")
+                    </th>
+                    @*@if (!Model.First().IsPaid && ReceivePayment)
+                    {
+                        <th>
+                            @Html.DisplayName("Action")
+                        </th>
+                    }*@
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @string.Concat(item.Student.StudentFirstName, " ", item.Student.StudentLastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Student.StudentRegistartionNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Student.Class.ClassDisplayName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TotalFee)
+                        </td>
+                        <td class="paid-text">
+                            @Html.DisplayFor(modelItem => item.Paid)
+                        </td>
+                        <td class=@(item.IsPaid?"paid-text":"un-paid-text")>
+                            @(item.TotalFee - item.Paid)
+                        </td>
+                        @*<td class="table-action">                           
+                            @if (!item.IsPaid && ReceivePayment)
+                            {
+                                @Html.ActionLink("Receive Payment", "Get", controllerName: "Payment", routeValues: new { studentId = item.Student.StudentId }, htmlAttributes: null)
+                            }
+                        </td>*@
+                    </tr>
+                }
+
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+
+</div>
+@section Scripts{
+   
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //$('#students').dataTable({
+            //    "pageLength": 5,
+            //    //"ordering": false,
+            //    "searching": true,
+            //    "lengthChange": false,
+            //    "columnDefs": [{
+            //        "targets": 'no-sort',
+            //        "orderable": false,
+            //    }]
+
+            //});
+
+            $('#btnSearch').on('click', function () {
+                //();
+                getStudentData(true, $("#txtSearch").val())
+            });
+        });
+    </script>
+}

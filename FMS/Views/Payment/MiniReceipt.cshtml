@@ -1,0 +1,182 @@
+﻿@model FMS.Receipt
+@{
+    var Student = Model.StudentPayments.First().Student;
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <style>
+        .reciept-head, .info-section {
+            overflow: hidden;
+            border: 1px solid #000000;
+            padding: 10px 20px;
+            margin: 10px 0;
+            font-size:12px
+        }
+
+            .reciept-head .img-view {
+                width: 100px;
+                float: left;
+            }
+
+                .reciept-head .img-view img {
+                    max-width: 80%;
+                }
+
+            .reciept-head .details-view {
+                width: calc(100% - 170px);
+                float: left;
+                padding: 0 20px 0 40px;
+            }
+
+                .reciept-head .details-view h4 {
+                    font-size: 16px;
+                    font-weight: normal;
+                    margin-bottom: 15px;
+                }
+
+                .reciept-head .details-view label {
+                    font-size: 12px;
+                    margin-bottom: 5px;
+                }
+
+            .info-section ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+
+                .info-section ul li {
+                    overflow: hidden;
+                    padding: 5px 0;
+                }
+
+                    .info-section ul li label {
+                        width: 170px;
+                        float: left;
+                    }
+
+                    .info-section ul li span {
+                        width: calc(100% - 170px);
+                        padding: 0 10px;
+                        float: left;
+                    }
+
+        .table {
+            border: 1px solid #000000;
+            font-size:12px
+        }
+
+            .table th {
+                border: 1px;
+            }
+
+            .table tbody > tr > th, .table tbody > tr > td {
+                padding: 10px 20px;
+            }
+
+        .sign-section {
+            margin-left: 85%;
+            margin-top: 5%;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="reciept-head">
+            <div class="img-view">
+                <img src="~/images/head-logo.png" />
+            </div>
+            <div class="details-view">
+                <center><h5>Gunjawani Shikshan Sanstha's</h5></center>
+                <center>
+                    <h4>
+                        <b>KASHINATHRAO KHUTWAD MEMORIAL SCHOOL (KKMS)</b>
+
+
+                        @if (Student.School.SchoolId == 1)
+                        {
+                            <span> - English Medium</span>
+                        }
+                        else if (Student.School.SchoolId == 3)
+                        {
+                            <span> - Marathi Medium</span>
+                        }
+                    </h4>
+                </center>
+               <center> <label>Sr. No. 65, Ambegaon bk., Behind RIBM College, Pune. Ph: (020) 20241217</label></center>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <ul>
+                <li>
+                    <label>Receipt No.</label>
+                    <span>@Model.ReceiptName</span>
+                </li>
+                <li>
+                    <label>Dated</label>
+                    <span>@Model.StudentPayments.First().CreatedDate.ToString("dd-MMM-yyyy")</span>
+                </li>
+                <li>
+                    <label>Student Name</label>
+                    <span>@string.Concat(Student.StudentFirstName, " ", (Student.StudentMiddleName != null && Student.StudentMiddleName.Trim() != "") ? Student.StudentMiddleName + " " : "", Student.StudentLastName)</span>
+                </li>
+                @if (!string.IsNullOrEmpty(Student.StudentRegistartionNo))
+                {
+                    <li>
+                        <label>GR. No.</label>
+                        <span>@Student.StudentRegistartionNo</span>
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <table class="table">
+            @*<tr>
+                <th>
+                    @Html.DisplayName("Particular")
+                </th>
+                <th>
+                    @Html.DisplayName("Amount")
+                </th>
+s
+                    </tr>*@
+
+            @*@foreach (var item in Model.StudentPayments.OrderBy(x => x.ClassFeeBreakup.FeeType.Priority))
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ClassFeeBreakup.FeeType.FeeTypeDisplayName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Amount)
+                        </td>
+
+                    </tr>
+                }*@
+            <tr>
+                <td>Amount Paid</td>
+                <td>@(Model.Amount.ToString() + " (" + ViewBag.PaidAmountInWords + ")")</td>
+            </tr>
+            <tr>
+                <td>Balanced </td>
+                <td>@(Model.Balance.ToString() + " (" + ViewBag.BalanceAmountInWords + ")")</td>
+            </tr>
+
+        </table>
+
+        <div class="sign-section">
+            <tho>Authorised By</tho>
+        </div>
+
+    </div>
+</body>
+</html>

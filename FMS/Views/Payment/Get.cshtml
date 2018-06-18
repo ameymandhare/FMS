@@ -1,0 +1,315 @@
+﻿@model FMS.Models.PaymentViewModel
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    String[] roles = Roles.GetRolesForUser();
+    var DeleteReceipt = roles.Any(x => x == "DeleteReceipt");
+}
+
+<hr />
+<h3>Student Details</h3>
+
+<div>
+    <div class="info-section">
+        <ul>
+            <li>
+                <label>GR. No.</label>
+                <span>@Html.DisplayFor(model => model.Student.StudentRegistartionNo)</span>
+            </li>
+            <li>
+                <label>Student Name</label>
+                <span>@(Model.Student.StudentFirstName + " " + Model.Student.StudentLastName)</span>
+            </li>
+            <li>
+                <label>Religion and cast</label>
+                <span>@Html.DisplayFor(model => model.Student.ReligionAndCast)</span>
+            </li>
+            <li>
+                <label>Admission Date</label>
+                <span>@Html.DisplayFor(model => model.Student.AdmissionDate)</span>
+            </li>
+            <li>
+                <label>Class</label>
+                <span>@Html.DisplayFor(model => model.Student.Class.ClassName)</span>
+            </li>
+            <li>
+                <label>Admission Quota</label>
+                <span>@Html.DisplayFor(model => model.Student.StudentQuota.StudentQuotaDisplayName)</span>
+            </li>
+            <li>
+                <label>Parent Name</label>
+                <span>@(Model.Student.ParentFirstName + " " + Model.Student.ParentLastName)</span>
+            </li>
+
+        </ul>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal clearfix row">
+            <h4>Payment</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.StudentId)
+
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.PaymentModeId, "Payment Mode", htmlAttributes: new { @class = "control-label" })
+                <div class="clearfix padding-top-bottom-20">
+                    @Html.DropDownList("PaymentModeId", null, htmlAttributes: new { @class = "form-control", onchange = "paymentModeChanged()" })
+                    @Html.ValidationMessageFor(model => model.PaymentModeId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label" })
+                <div class="clearfix padding-top-bottom-20">
+                    @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @Value = "", @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-4 cheque-number" style="display:none">
+                Cheque Number
+                <div class="clearfix padding-top-bottom-20">
+                    @Html.EditorFor(model => model.ChequeNumber, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                    @Html.ValidationMessageFor(model => model.ChequeNumber, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="padding-top-bottom-20 clearfix">
+            <input type="submit" value="Receive Payment" class="btn btn-primary pull-left" />
+            @*<div class="pull-left padding-left-20">
+                    @Html.ActionLink("Print Receipt", "Index", null, htmlAttributes: new { target = "_blank", @class = "print-link" })
+                </div>*@
+        </div>
+        <hr />
+    }
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayName("Fee Structure")
+            </th>
+            <th>
+                @Html.DisplayName("Total Amount")
+            </th>
+            <th>
+                @Html.DisplayName("Paid")
+            </th>
+            <th>
+                @Html.DisplayName("Unpaid")
+            </th>
+        </tr>
+
+        @foreach (var item in Model.FeeStructures)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FeeStucture)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalAmount)
+                </td>
+                <td class="paid-text">
+                    @Html.DisplayFor(modelItem => item.PaidAmount)
+                </td>
+
+                @{
+                    var unpaidAmount = item.TotalAmount - item.PaidAmount;
+                }
+                <td class="un-paid-text">
+                    @unpaidAmount
+                </td>
+            </tr>
+                    }
+        <tr class="gray-bg font-bold">
+            @{
+                var total = @Model.FeeStructures.Select(x => x.TotalAmount).Sum();
+                var paid = @Model.FeeStructures.Select(x => x.PaidAmount).Sum();
+                var totalUnpaidAmount = total - paid;
+            }
+            <td>Total Fee</td>
+            <td>@total</td>
+            <td>@paid</td>
+            <td>@totalUnpaidAmount</td>
+        </tr>
+
+    </table>
+    <hr />
+
+
+</div>
+<p>
+    <a href="#" data-toggle="modal" data-target="#receiptModel">Payment History</a>&nbsp;|&nbsp;@Html.ActionLink("Back to Search Student", "Index")
+</p>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Print Receipt</h4>
+            </div>
+            <div class="modal-body">
+                <p>Payment received.</p>
+            </div>
+            <div class="modal-footer">
+                <div class="pull-left padding-left-20">
+
+                    @Html.ActionLink("Print Mini Receipt", "MiniReceipt", new { receiptId = Model.ReceiptId != null ? Model.ReceiptId : 0 }, htmlAttributes: new { target = "_blank", @class = "print-link" })
+                </div>
+                <div class="pull-left padding-left-20">
+                    @Html.ActionLink("Print Receipt", "Receipt", new { receiptId = Model.ReceiptId != null ? Model.ReceiptId : 0 }, htmlAttributes: new { target = "_blank", @class = "print-link" })
+
+                </div>
+                <button id="btnAnotherPayment" type="button" class="btn btn-default" data-dismiss="modal">Receive Another Payment</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="receiptModel" role="dialog">
+    <div class="modal-dialog  modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Payment</h4>
+            </div>
+            <div class="modal-body">
+                <table id="tbl-receipts" class="table">
+                    <tr>
+                        <th>
+                            @Html.DisplayName("Receipt Number")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Amount")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Date")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Action")
+                        </th>
+                    </tr>
+
+                    @foreach (var item in Model.Student.StudentPayments.Where(x => x.IsActive == true).OrderByDescending(x => x.CreatedDate).Select(x => x.Receipt).Distinct())
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ReceiptName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Amount)
+                            </td>
+                            <td>
+                                @item.CreatedDate.ToString("dd-MMM-yyyy hh:mm tt")
+                            </td>
+                            <td class="table-action">
+                                @*<span class="glyphicon glyphicon-remove-sign"></span>*@
+
+                                @*<span class="glyphicon glyphicon-print"></span>*@
+                                @Html.ActionLink("Print", "Receipt", new { receiptId = item.ReceiptId }, htmlAttributes: new { target = "_blank" })
+                                @Html.ActionLink("Mini Print", "MiniReceipt", new { receiptId = item.ReceiptId }, htmlAttributes: new { target = "_blank" })
+                                @if (DeleteReceipt)
+                                {
+                                    <a href="#" class="delete-receipt" data-receipt=@item.ReceiptId data-student=@Model.Student.StudentId>Delete</a>
+                                }
+                                @*@Html.Label("Enter reason", htmlAttributes: new { id = "lblReason", style = "display:none" })
+                                    @Html.TextArea("txtReason", htmlAttributes: new { style = "display:none" })
+                                    <button id="btnOk" type="button" style="display:none" >Ok</button>*@
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+@section Scripts
+{
+    <script type="text/javascript">
+        function paymentModeChanged() {
+            if ($("#PaymentModeId").val() == 2) {
+                $(".cheque-number").show();
+            }
+            else {
+                $(".cheque-number").hide();
+            }
+        }
+        $(".delete-receipt").click(function () {
+            //$("#lnkDelete").hide();
+            //$("#lblReason").show();
+            //$("#txtReason").show();
+            //$("#btnOk").show();
+            var result = confirm("Are you sure you want to delete?");
+            if (result) {
+                var receiptId = $(this).data("receipt");
+                var studentId = $(this).data("student");
+                var url = "@Url.Content("~/Payment/DeleteReceipt?receiptId=")"+ receiptId;
+                $.ajax({
+                    url: url,
+                    dataType: 'text',
+                    type: 'post',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: receiptId,
+                    success: function (data) {
+                        alert("Receipt deleted.");
+                        window.location.href = "@Url.Content("~/Payment/Get?studentId=")" + studentId;
+                    },
+                    error: function (jqXhr, textStatus, errorThrown) {
+                        alert("error");
+                    }
+                });
+            }
+        });
+
+        //$("#btnOk").click(function () {
+        //    alert("Your delete request sent to Administartor for approval.")
+        //    $("#lnkDelete").hide();
+        //    $("#lblReason").hide();
+        //    $("#txtReason").hide();
+        //    $("#btnOk").hide();
+        //});
+    </script>
+    @if (Model.ReceiptId != null)
+    {
+        <script type="text/javascript">
+            //$(function () {
+
+            //});
+
+            $(document).ready(function () {
+                $("#myModal").modal('show');
+                 @*alert("Payment Received.");
+                debugger;
+                var url = '@Url.Content("~/Payment/Receipt?ReceiptId="+ReceiptId)';
+                $(".print-link").hide();
+                $(".print-link1").attr("href", url);*@
+            });
+            $("#btnAnotherPayment").click(function () {
+                window.location.href = "@Url.Content("~/Payment/Index")";
+            });
+        </script>
+    }
+    else
+    {
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+                $("#Amount").focus();
+            });
+        </script>
+    }
+}

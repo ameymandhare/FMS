@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="5fdd92be75014f2186f1b3760abb4d7a" Name="Diagram1" ZoomLevel="71">
+        <EntityTypeShape EntityType="FMSModel.Class" Width="1.5" PointX="0.75" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FMSModel.ClassFeeBreakup" Width="1.5" PointX="3" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FMSModel.FeeType" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FMSModel.PaymentMode" Width="1.5" PointX="6" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FMSModel.School" Width="1.5" PointX="3.75" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FMSModel.Student" Width="1.5" PointX="6" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FMSModel.StudentPayment" Width="1.5" PointX="8.25" PointY="5.875" IsExpanded="true" />
+        <AssociationConnector Association="FMSModel.FK_ClassFeeBreakup_Class" ManuallyRouted="false" />
+        <AssociationConnector Association="FMSModel.FK_Student_Class" ManuallyRouted="false" />
+        <AssociationConnector Association="FMSModel.FK_ClassFeeBreakup_FeeType" ManuallyRouted="false" />
+        <AssociationConnector Association="FMSModel.FK_StudentPayment_ClassFeeBreakup" ManuallyRouted="false" />
+        <AssociationConnector Association="FMSModel.FK_StudentPayment_PaymentMode" ManuallyRouted="false" />
+        <AssociationConnector Association="FMSModel.FK_Student_School" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="FMSModel.StudentQuota" Width="1.5" PointX="8.375" PointY="0.875" />
+        <AssociationConnector Association="FMSModel.FK_Student_StudentQuota" />
+        <AssociationConnector Association="FMSModel.FK_StudentPayment_Student" />
+        <EntityTypeShape EntityType="FMSModel.Receipt" Width="1.5" PointX="8.25" PointY="11.375" />
+        <AssociationConnector Association="FMSModel.FK_Receipt_PaymentMode" />
+        <AssociationConnector Association="FMSModel.FK_StudentPayment_Receipt" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

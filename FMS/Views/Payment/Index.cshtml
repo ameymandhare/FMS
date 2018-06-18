@@ -1,0 +1,61 @@
+﻿@model  FMS.Student
+<h2>Receive Payment</h2>
+
+<div class="form-horizontal">
+    <h4></h4>
+    <hr />
+    <div class="form-group">
+
+
+        <div class="col-md-10">
+
+            @Html.TextBox("txtStudent", "", htmlAttributes: new { @class = "form-control", placeholder = "Enter Student Name or GR. No." })
+
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script src="~/Scripts/jquery-ui.min.js"></script>
+    <link href="~/Content/jquery-ui.css" rel="stylesheet" />
+    <script>
+
+        $(document).ready(function () {
+            $(function () {
+                $("#txtStudent").autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: '@Url.Content("~/Payment/GetStudents")',//'Payment/GetStudents',
+                            data: "{ 'prefix': '" + request.term + "'}",
+                            dataType: "json",
+                            type: "POST",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (data) {
+                                response($.map(data, function (item) {
+
+
+                                    return item;
+                                }))
+                            },
+                            error: function (response) {
+                                alert(response.responseText);
+                            },
+                            failure: function (response) {
+                                alert(response.responseText);
+                            }
+                        });
+                    },
+                    select: function (e, i) {
+                        window.location.href ="@Url.Content("~/Payment/Get?studentId=")"+i.item.val;
+                        //selectedStudentChanged();
+                    },
+                    minLength: 3
+                });
+            });
+
+        });
+
+
+
+    </script>
+}

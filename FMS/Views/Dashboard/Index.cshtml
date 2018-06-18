@@ -1,0 +1,42 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <style>
+        .container {
+            width:50%;
+            margin-top:100px;
+        }
+        .btn-wrapper{
+            padding:50px 0 0;
+        }
+        .btn-wrapper .btn{
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+        .form-control{
+            height: auto;
+            padding: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        @Html.DropDownList("AcademicYearId", null, htmlAttributes: new { @class = "form-control" })
+        <div class="row btn-wrapper">
+            <div class="col-md-6">@Html.ActionLink("English Medium", "SetSchool", new { schoolId = 1, academicYearId = 8 }, new { @class = "btn btn-primary col-md-6" })</div>
+            <div class="col-md-6">@Html.ActionLink("Marathi Medium", "SetSchool", new { schoolId = 3, academicYearId = 8 }, new { @class = "btn btn-primary col-md-6" })</div>             
+        </div>
+    </div>
+</body>
+</html>

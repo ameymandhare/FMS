@@ -1,0 +1,80 @@
+﻿@model IEnumerable<FMS.Models.RoleViewModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.RoleName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModifiedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModifiedDate)
+
+        </th>
+        <th>
+            Access Rights
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedBy)
+            </td>
+            <td>
+                @Convert.ToString(string.Format("{0:dd-MMM-yyyy hh:mm tt}", item.CreatedDate))
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModifiedBy)
+            </td>
+            <td>
+               @Convert.ToString(string.Format("{0:dd-MMM-yyyy hh:mm tt}", item.ModifiedDate))
+            </td>
+            <td>
+                @{
+                    var str = new System.Text.StringBuilder();
+                    string modules = string.Empty;
+                    foreach (var r in item.RoleModules)
+                    {
+                        str = str.Append(r.ModuleName + ", ");
+
+                    }
+                }
+                @if (str.Length > 0)
+                {
+                    modules=str.ToString().Remove(str.Length - 2, 2);
+                }
+                @modules
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.RoleId }) |
+                @*@Html.ActionLink("Details", "Details", new { id = item.RoleId }) |*@
+                @Html.ActionLink("Delete", "Delete", new { id = item.RoleId }) |
+                @Html.ActionLink("View Members", "Members", new { id = item.RoleId })
+            </td>
+        </tr>
+                    }
+
+</table>

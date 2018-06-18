@@ -1,0 +1,645 @@
+﻿
+@{
+    ViewBag.Title = "ReportDashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Dashboard</h2>
+<div class="row padding-top-bottom-20">
+    <div class="col-md-6">
+        <div id="fee-collection" style="min-width: 210px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+    </div>
+    <div class="col-md-6">
+        <div id="student-fee-status" style="min-width: 210px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+        <div class="text-center">
+            <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-time"></span>&nbsp; Send Reminder</button>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div id="fee-heads" style="min-width: 210px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+    </div>
+    <div class="col-md-6">
+        <div id="fee-payment-mode" style="min-width: 210px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+    </div>
+
+</div>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+</div>
+
+
+@section Scripts
+{
+    <script src="~/Scripts/Highcharts/highcharts.js"></script>
+    <script src="~/Scripts/Highcharts/exporting.js"></script>
+    <script src="~/Scripts/Highcharts/drilldown.js"></script>
+    <script src="~/Scripts/Highcharts/jquery.dataTables.min.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+             $.ajax({
+                url: 'FeeCollectionReport',
+                dataType: "json",
+                type: "GET",
+                contentType: 'application/json; charset=utf-8',
+                async: false,
+                processData: false,
+                cache: false,
+                delay: 15,
+                success: function (data) {
+                    // alert(data);
+                    //console.log(data);
+                    //var series = new Array();
+                    //for (var i in data) {
+                    //    var serie = new Array(data[i].Value, data[i].Item);
+                    //    series.push(serie);
+                    //}
+                    //DrawFeeCollectionReportPieChart(data);
+                    TestChart(data);
+                },
+                error: function (xhr) {
+                    alert('error');
+                }
+            });
+
+            $.ajax({
+                url: 'StudentFeeStatusReport',
+                dataType: "json",
+                type: "GET",
+                contentType: 'application/json; charset=utf-8',
+                async: false,
+                processData: false,
+                cache: false,
+                delay: 15,
+                success: function (data) {
+                    // alert(data);
+                    //console.log(data);
+                    //var series = new Array();
+                    //for (var i in data) {
+                    //    var serie = new Array(data[i].Value, data[i].Item);
+                    //    series.push(serie);
+                    //}
+                    DrawStudentFeeStatusReportPieChart(data);
+                },
+                error: function (xhr) {
+                    alert('error');
+                }
+            });
+
+            $.ajax({
+                url: 'FeeHeadCollectionSummary',
+                dataType: "json",
+                type: "GET",
+                contentType: 'application/json; charset=utf-8',
+                async: false,
+                processData: false,
+                cache: false,
+                delay: 15,
+                success: function (data) {
+                    // alert(data);
+                    //console.log(data);
+                    //var series = new Array();
+                    //for (var i in data) {
+                    //    var serie = new Array(data[i].Value, data[i].Item);
+                    //    series.push(serie);
+                    //}
+                    DrawFeeHeadCollectionColumnChart(data);
+                },
+                error: function (xhr) {
+                    alert('error');
+                }
+            });
+
+            $.ajax({
+                url: 'PaymentModeCollectionSummary',
+                dataType: "json",
+                type: "GET",
+                contentType: 'application/json; charset=utf-8',
+                async: false,
+                processData: false,
+                cache: false,
+                delay: 15,
+                success: function (data) {
+                    // alert(data);
+                    //console.log(data);
+                    //var series = new Array();
+                    //for (var i in data) {
+                    //    var serie = new Array(data[i].Value, data[i].Item);
+                    //    series.push(serie);
+                    //}
+                    DrawPaymentModeCollectionSummaryPieChart(data);
+                },
+                error: function (xhr) {
+                    alert('error');
+                }
+            });
+
+        });
+
+        function pointClick() {
+
+            $("#myModal").modal();
+
+        }
+
+        function DrawFeeCollectionReportPieChart(series) {
+
+            $('#fee-collection').highcharts({
+
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: 1, //null,
+                    plotShadow: false
+                },
+                title: {
+                    text: 'Fee Collection Summary'
+                },
+                tooltip: {
+                    pointFormat: '<b>Rs. {point.y}</b>'
+                },
+                //dataLabels: {
+                //    enabled: true,
+                //    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                //    style: {
+                //        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                //    }
+                //},
+
+
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: false,
+                            //formatter: function () {
+                            //    return this.y + " ( " + this.percentage.toFixed(2) + " % )";
+                            //}
+                        },
+                        showInLegend: true
+                    }
+                },
+                legend: {
+                    //layout: 'vertical',
+                    //align: 'right',
+                    //verticalAlign: 'middle',
+                    //floating: true,
+                    labelFormat: '{name} <b>Rs. {y}</b>'
+                },
+                //legend: {
+                //    enabled: true,
+                //    floating: true,
+                //    align: 'left',
+                //    verticalAlign: 'top',
+                //    y: 35,
+                //    //labelFormat: '<span style="color:{color}">{name}</span>: <b>{point.y:.2f} USD</b> ({point.change:.2f}%)<br/>',
+                //    borderWidth: 0
+                //},
+                series: [{
+                    type: 'pie',
+                    name: 'Fees',
+                    data: [{
+                        name: 'Collected',
+                        y: series.Paid
+                    }, {
+                        name: 'Remaining',
+                        y: series.UnPaid
+                    }
+                    ],
+                    point: {
+                        events: {
+                            //click: pointClick
+                        }
+                    }
+                }]
+
+            });
+        }
+
+        function DrawStudentFeeStatusReportPieChart(series) {
+
+            $('#student-fee-status').highcharts({
+
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: 1, //null,
+                    plotShadow: false
+                },
+                title: {
+                    text: 'Student Fee Summary'
+                },
+                tooltip: {
+                    pointFormat: '<b>{point.y}</b>'
+                },
+                //dataLabels: {
+                //    enabled: true,
+                //    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                //    style: {
+                //        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                //    }
+                //},
+
+
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: false,
+                            //formatter: function () {
+                            //    return this.y + " ( " + this.percentage.toFixed(2) + " % )";
+                            //}
+                        },
+                        showInLegend: true
+                    }
+                },
+                legend: {
+                    //layout: 'vertical',
+                    //align: 'right',
+                    //verticalAlign: 'middle',
+                    //floating: true,
+                    labelFormat: '<b>{y} </b>Students {name}'
+                },
+                //legend: {
+                //    enabled: true,
+                //    floating: true,
+                //    align: 'left',
+                //    verticalAlign: 'top',
+                //    y: 35,
+                //    //labelFormat: '<span style="color:{color}">{name}</span>: <b>{point.y:.2f} USD</b> ({point.change:.2f}%)<br/>',
+                //    borderWidth: 0
+                //},
+                series: [{
+                    type: 'pie',
+                    name: 'Fees',
+                    data: [{
+                        name: 'Paid',
+                        y: series.Paid
+                        //color:'#7CFC00'
+                    }, {
+                        name: 'Yet to pay',
+                        y: series.UnPaid
+                        //color:'#FF0000'
+                    }
+                    ],
+                    point: {
+                        events: {
+                            //click: pointClick
+                            click: function () {
+                                var isPaid = false;
+
+                                if (this.name == "Paid") {
+                                    isPaid = true;
+                                }
+                                //alert('Category: ' + this.name + ', value: ' + this.y);
+                                getStudentData(isPaid);
+                            }
+                        }
+                    }
+                }],
+                //exporting: {
+                //    buttons: {
+                //        customButton: {
+                //            x: -38,
+                //            y: 349,
+                //            text: 'Send Reminder',
+                //            onclick: function () {
+                //                alert('You pressed the button!');
+                //            }
+                //        }
+                //    }
+                //}
+            });
+        }
+
+        function getStudentData(isPaid, searchText) {
+            //alert(searchText);
+            //var searchText = "";
+            //if ($("txtSearch").length > 0)
+            //{
+            //    searchText = $("txtSearch").val();
+            //}
+            var url = "@Url.Content("~/Dashboard/StudentData?isPaid=")" + isPaid + "&searchText=";
+
+            //if (searchText != undefined)
+            //{
+               // alert("toggle");
+               // $('#myModal').modal('toggle');
+            //}
+
+            $('#myModal').load(url, function (data) {
+                //once the event content has been loaded
+                //alert(data);
+                $("#myModal").modal();
+            });
+
+        }
+
+        $('#btnSearch').on('click', function () {
+            alert();
+        });
+
+        function TestChart(series) {
+            // $(function () {
+
+            //console.log(series);
+            // Create the chart
+            var dd = series;
+            var options = {
+                chart: {
+                    events: {
+                        drilldown: function (e) {
+                            if (!e.seriesOptions) {
+
+                                var chart = this,
+                                    drilldowns = {
+                                        'Collected': {
+                                            name: 'Collected',
+                                            data: dd.Collected//[2000, 3000, 1222, 545, 4546]
+                                        },
+                                        'Remaining': {
+                                            name: 'Remaining',
+                                            data: dd.Remaining//[2000, 3000, 1222, 545, 4546]
+                                        }
+                                    },
+                            series = drilldowns[e.point.name];
+
+
+
+                                // Show the loading label
+                                chart.showLoading('Loading ...');
+
+                                setTimeout(function () {
+                                    chart.hideLoading();
+                                    chart.type = 'pie';
+                                    chart.addSeriesAsDrilldown(e.point, series);
+                                }, 1);
+                            }
+
+                        }
+                    },
+                    plotBackgroundColor: null,
+                    plotBorderWidth: 1, //null,
+                    plotShadow: false
+                },
+
+                title: {
+                    text: 'Fee Collection Summary',
+                },
+                //
+                //subtitle: {
+                //    text: 'Subtitle'
+                //},
+
+                tooltip: {
+                    pointFormat: '<b>Rs. {point.y}</b>'
+                },
+                //
+                //xAxis: {
+                //    type: 'category',
+                //},
+                xAxis: {
+                    categories: dd.Classes
+                },
+                //
+                yAxis: {
+
+                    title: {
+                        margin: 10,
+                        text: ''
+                    },
+                },
+                //
+                legend: {
+                    //layout: 'vertical',
+                    //align: 'right',
+                    //verticalAlign: 'middle',
+                    //floating: true,
+                    labelFormat: '{name} <b>Rs. {y}</b>'
+                },
+                //
+                plotOptions: {
+                    series: {
+                        pointPadding: 0.2,
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: false
+                        }
+                    },
+                    pie: {
+                        plotBorderWidth: 0,
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        size: '100%',
+                        dataLabels: {
+                            enabled: false
+                            //format: '{point.name}: <b>{point.y}</b>'
+                        },
+                        showInLegend: true
+                    }
+                },
+                //
+                series: [{
+                    name: 'Summary',
+                    colorByPoint: true,
+                    //data: [{
+                    //    name: 'Animals',
+                    //    y: 5,
+                    //    drilldown: true
+                    //}, {
+                    //    name: 'Fruits',
+                    //    y: 2,
+                    //    drilldown: true
+                    //}, {
+                    //    name: 'Cars',
+                    //    y: 4,
+                    //    drilldown: true
+                    //}]
+                    data: [{
+                        name: 'Collected',
+                        y: series.Paid,
+                        drilldown: true
+                        //color: '#7CFC00'
+                    }, {
+                        name: 'Remaining',
+                        y: series.UnPaid,
+                        drilldown: true
+                        //color: '#FF0000 '
+                    }
+                    ]
+                }],
+                //
+                drilldown: {
+                    series: []
+                }
+            };
+
+            // Column chart
+            options.chart.renderTo = 'fee-collection';
+            options.chart.type = 'column';
+            var chart1 = new Highcharts.Chart(options);
+
+
+            chart1.series[0].update({
+                type: 'pie'
+            });
+        }
+
+        function DrawFeeHeadCollectionColumnChart(series)
+        {
+            $('#fee-heads').highcharts({
+                chart: {
+                    type: 'column',
+                     plotBackgroundColor: null,
+                    plotBorderWidth: 1, //null,
+                    plotShadow: false
+                },
+                title: {
+                    text: 'Fee Heads Collection Summary'
+                },
+                xAxis: {
+                    type: 'category'
+                },
+                yAxis: {
+                    title: {
+                        margin: 10,
+                        text: ''
+                    }
+
+               },
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            format: 'Rs. {point.y:.1f}'
+                        }
+                    }
+                },
+
+                tooltip: {
+                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>Rs. {point.y:.2f}</b><br/>'
+                },
+
+                series: [{
+                    name: 'Fee Head',
+                    colorByPoint: true,
+                    data:series
+                    //data: [{
+                    //    name: 'Microsoft Internet Explorer',
+                    //    y: 56.33
+                    //}, {
+                    //    name: 'Chrome',
+                    //    y: 24.03
+                    //}, {
+                    //    name: 'Firefox',
+                    //    y: 10.38
+                    //}, {
+                    //    name: 'Safari',
+                    //    y: 4.77
+                    //}, {
+                    //    name: 'Opera',
+                    //    y: 0.91
+                    //}, {
+                    //    name: 'Proprietary or Undetectable',
+                    //    y: 0.2
+                    //}]
+                }]
+
+            });
+        }
+
+        function DrawPaymentModeCollectionSummaryPieChart(series)
+        {
+            $('#fee-payment-mode').highcharts({
+
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: 1, //null,
+                    plotShadow: false
+                },
+                title: {
+                    text: 'Fee Payment Mode Summary'
+                },
+                tooltip: {
+                    pointFormat: '<b>Rs. {point.y}</b>'
+                },
+                //dataLabels: {
+                //    enabled: true,
+                //    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                //    style: {
+                //        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                //    }
+                //},
+
+
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: false,
+                            //formatter: function () {
+                            //    return this.y + " ( " + this.percentage.toFixed(2) + " % )";
+                            //}
+                        },
+                        showInLegend: true
+                    }
+                },
+                legend: {
+                    //layout: 'vertical',
+                    //align: 'right',
+                    //verticalAlign: 'middle',
+                    //floating: true,
+                    labelFormat: '<b>Rs. {y} </b>Received {name}'
+                },
+                //legend: {
+                //    enabled: true,
+                //    floating: true,
+                //    align: 'left',
+                //    verticalAlign: 'top',
+                //    y: 35,
+                //    //labelFormat: '<span style="color:{color}">{name}</span>: <b>{point.y:.2f} USD</b> ({point.change:.2f}%)<br/>',
+                //    borderWidth: 0
+                //},
+                series: [{
+                    type: 'pie',
+                    name: 'Fees',
+                    data: [{
+                        name: 'By Cash',
+                        y: series.Cash
+                        //color:'#7CFC00'
+                    }, {
+                        name: 'By Cheque',
+                        y: series.Cheque
+                        //color:'#FF0000'
+                    }
+                    ]
+                }],
+                //exporting: {
+                //    buttons: {
+                //        customButton: {
+                //            x: -38,
+                //            y: 349,
+                //            text: 'Send Reminder',
+                //            onclick: function () {
+                //                alert('You pressed the button!');
+                //            }
+                //        }
+                //    }
+                //}
+            });
+        }
+
+    </script>
+
+}

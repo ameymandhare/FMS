@@ -1,0 +1,177 @@
+﻿@model FMS.Models.PaymentViewModel
+@{
+    ViewBag.Title = "Get1";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Get1</h2>
+<hr />
+<h3>Student Details</h3>
+
+<div>
+    <div class="info-section">
+        <ul>
+            <li>
+                <label>@Html.DisplayNameFor(model => model.Student.StudentRegistartionNo)</label>
+                <span>@Html.DisplayFor(model => model.Student.StudentRegistartionNo)</span>
+            </li>
+            <li>
+                <label>@Html.DisplayNameFor(model => model.Student.StudentLastName)</label>
+                <span>@Html.DisplayFor(model => model.Student.StudentLastName)</span>
+            </li>
+            <li>
+                <label>@Html.DisplayNameFor(model => model.Student.StudentFirstName)</label>
+                <span>@Html.DisplayFor(model => model.Student.StudentFirstName)</span>
+            </li>
+            <li>
+                <label>@Html.DisplayNameFor(model => model.Student.ReligionAndCast)</label>
+                <span>@Html.DisplayFor(model => model.Student.ReligionAndCast)</span>
+            </li>
+            <li>
+                <label>@Html.DisplayNameFor(model => model.Student.AdmissionDate)</label>
+                <span>@Html.DisplayFor(model => model.Student.AdmissionDate)</span>
+            </li>
+            <li>
+                <label>@Html.DisplayNameFor(model => model.Student.Class.ClassName)</label>
+                <span>@Html.DisplayFor(model => model.Student.Class.ClassName)</span>
+            </li>
+        </ul>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal clearfix row">
+            <h4>Payment</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Student.StudentId)
+
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.PaymentModeId, "PaymentModeId", htmlAttributes: new { @class = "control-label" })
+                <div class="clearfix padding-top-bottom-20">
+                    @Html.DropDownList("PaymentModeId", null, htmlAttributes: new { @class = "form-control", onchange = "paymentModeChanged()" })
+                    @Html.ValidationMessageFor(model => model.PaymentModeId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label" })
+                <div class="clearfix padding-top-bottom-20">
+                    @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @Value = "", @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-4 cheque-number" style="display:none">
+                @Html.LabelFor(model => model.ChequeNumber, htmlAttributes: new { @class = "control-label" })
+                <div class="clearfix padding-top-bottom-20">
+                    @Html.EditorFor(model => model.ChequeNumber, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ChequeNumber, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="padding-top-bottom-20 clearfix">
+            <input type="submit" value="Receive Payment" class="btn btn-primary pull-left" />
+            <div class="pull-left padding-left-20">
+                @Html.ActionLink("Print Receipt", "Index", null, htmlAttributes: new { target = "_blank", @class = "print-link" })
+            </div>
+        </div>
+        <hr />
+    }
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayName("Fee Structure")
+            </th>
+            <th>
+                @Html.DisplayName("Total Amount")
+            </th>
+            <th>
+                @Html.DisplayName("Paid")
+            </th>
+            <th>
+                @Html.DisplayName("Unpaid")
+            </th>
+        </tr>
+
+        @foreach (var item in Model.FeeStructures)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FeeStucture)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalAmount)
+                </td>
+                <td class="paid-text">
+                    @Html.DisplayFor(modelItem => item.PaidAmount)
+                </td>
+
+                @{
+                    var unpaidAmount = item.TotalAmount - item.PaidAmount;
+                }
+                <td class="un-paid-text">
+                    @unpaidAmount
+                </td>
+            </tr>
+                    }
+        <tr class="gray-bg font-bold">
+            @{
+                var total = @Model.FeeStructures.Select(x => x.TotalAmount).Sum();
+                var paid = @Model.FeeStructures.Select(x => x.PaidAmount).Sum();
+                var totalUnpaidAmount = total - paid;
+            }
+            <td>Total Fee</td>
+            <td>@total</td>
+            <td>@paid</td>
+            <td>@totalUnpaidAmount</td>
+        </tr>
+
+    </table>
+    <hr />
+    <table id="tbl-receipts" class="table">
+        <tr>
+            <th>
+                @Html.DisplayName("Receipt Number")
+            </th>
+            <th>
+                @Html.DisplayName("Amount")
+            </th>
+            <th>
+                @Html.DisplayName("Date")
+            </th>
+            <th>
+                @Html.DisplayName("Action")
+            </th>
+        </tr>
+
+        @foreach (var item in Model.Student.StudentPayments.Select(x => x.Receipt).Distinct())
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReceiptName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+                <td class="table-action">
+                    @*<span class="glyphicon glyphicon-remove-sign"></span>*@ @Html.ActionLink("Delete", "DeleteReceipt", new { receiptId = item.ReceiptId })
+                    @*<span class="glyphicon glyphicon-print"></span>*@ @Html.ActionLink("Print", "PrintReceipt", new { receiptId = item.ReceiptId })
+                </td>
+            </tr>
+        }
+        <tr>
+    </table>
+
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Student.StudentId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+

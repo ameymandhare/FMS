@@ -1,0 +1,46 @@
+﻿@model IEnumerable<FMS.Models.UserViewModel>
+@{
+    ViewBag.Title = "Members";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Members</h2>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            Schools
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @{
+                    var str = new System.Text.StringBuilder();
+                    string schools = string.Empty;
+                    foreach (var r in item.UserSchools)
+                    {
+                        str = str.Append(r.SchoolName + ", ");
+
+                    }
+                }
+                @if (str.Length > 0)
+                {
+                    schools = str.ToString().Remove(str.Length - 2, 2);
+                }
+                @schools
+            </td>
+        </tr>
+                    }
+
+</table>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,118 @@
+﻿html{
+    height:100%;
+}
+body {
+    min-height:100%;
+    position:relative;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+footer{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    border-top:1px solid #eeeeee;
+    padding:10px 0;
+}
+footer p{
+    margin:0;
+}
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+.padding-none{
+    padding:0!important;
+}
+.padding-left-20{
+    padding-left:20px;
+}
+
+.padding-top-bottom-20{
+    padding:20px 0;
+}
+.paid-text{
+    color:#71d560;
+}
+.un-paid-text{
+    color:#ff4b55;
+}
+.gray-bg{
+    background:#e2eef1;
+}
+.font-bold{
+    font-weight:bold;
+}
+
+.info-section {
+    overflow: hidden;
+    border: 1px solid #ebebeb;
+    padding: 10px 20px;
+    margin: 30px 0;
+}
+
+    .info-section ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+        .info-section ul li {
+            overflow: hidden;
+            padding: 5px 0;
+        }
+
+            .info-section ul li label {
+                width: 200px;
+                float: left;
+            }
+
+            .info-section ul li span {
+                width: calc(100% - 200px);
+                padding: 0 10px;
+                float: left;
+            }
+
+.table {
+    border: 1px solid #ebebeb;
+    border-collapse:inherit;
+}
+
+    .table tbody > tr > th {
+        border: 0;
+    }
+
+    .table tbody > tr > th, .table tbody > tr > td {
+        padding: 10px 20px;
+    }
+    .table .table-action a{
+        padding-right:20px;
+        float:left;
+    }
+    .table .table-action a:last-child{
+        padding:0;
+    }
+
+.print-link {
+    background: url('../images/print.png') no-repeat left center;
+    background-size:20px;
+    padding-left:34px;
+    line-height:30px;
+    display:block;
+}
